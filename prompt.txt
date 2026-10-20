@@ -1,0 +1,1 @@
+Build me a landing page for a hardware device launch: a small handheld gaming device, like a Nintendo DS / Game Boy. Make it look incredible. Output a single self-contained HTML file (inline CSS and JS; Google Fonts allowed; no external images — draw the device itself in HTML/CSS/SVG). Return only the HTML.
