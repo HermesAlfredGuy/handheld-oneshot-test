@@ -5,9 +5,10 @@
 h1{font:800 clamp(40px,8vw,88px)/.92 'Bricolage Grotesque';margin:0 0 16px;letter-spacing:-.03em}p{line-height:1.6;max-width:65ch}
 a.card{display:block;border:3px solid #111;box-shadow:6px 6px 0 #111;background:#fff;padding:18px 20px;margin:18px 0;color:#111;text-decoration:none}
 a.card:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 #111}b{font:800 26px 'Bricolage Grotesque'}small{display:block;margin-top:6px}</style></head>
-<body><main><h1>Same prompt.<br>Three pages.</h1>
+<body><main><h1>Same request.<br>Four pages.</h1>
 <p>Prompt: "Build me a landing page for a hardware device launch: a small handheld gaming device, like a Nintendo DS / Game Boy. Make it look incredible." One request each, no agent, a single HTML file. "Brief" adds the house art-direction system prompt (<a href="design-system.md">design-system.md</a>).</p>
 <a class="card" href="deepseek-raw/"><b>DeepSeek v4.1 Flash, raw</b><small>The prompt only. 40k tokens, 137 s.</small></a>
 <a class="card" href="deepseek-brief/"><b>DeepSeek v4.1 Flash + brief</b><small>Prompt + art-direction brief. 46k tokens, 162 s.</small></a>
 <a class="card" href="minimax-brief/"><b>MiniMax M3.1 Flash + brief</b><small>Prompt + art-direction brief. 53k tokens, 262 s.</small></a>
+<a class="card" href="deepseek-auto/"><b>DeepSeek v4.1 Flash + AUTOMATIC brief</b><small>Only a one-line request: the brief writer expanded it into a full creative brief (<a href="deepseek-auto/brief.md" style="color:inherit">brief.md</a>), then the page. This is what every new site starts from now.</small></a>
 </main></body></html>
