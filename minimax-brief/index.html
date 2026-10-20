@@ -1,0 +1,4257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f0df">
+  <meta name="description" content="RIOT//01 is a 94-gram pocket arcade with a bright 2.8-inch display, tactile controls, 48 games and 14 hours of play.">
+  <title>RIOT//01 — Small Box. Big Riot.</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #17213a;
+      --paper: #f6f0df;
+      --cream: #fffaf0;
+      --blue: #4255e7;
+      --blue-dark: #2839b9;
+      --coral: #ff695d;
+      --acid: #d9ff55;
+      --lavender: #c7b8ff;
+      --pink: #ff93bd;
+      --white: #fffdf7;
+      --muted: #616577;
+      --line: 2px solid var(--ink);
+      --display: "Bowlby One SC", Impact, sans-serif;
+      --mono: "DM Mono", monospace;
+      --body: "Manrope", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body,
+    button,
+    input,
+    select {
+      font-family: var(--body);
+    }
+
+    button,
+    input,
+    select {
+      font-size: inherit;
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+
+    img,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    ::selection {
+      background: var(--acid);
+      color: var(--ink);
+    }
+
+    :focus-visible {
+      outline: 4px solid var(--coral);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 1000;
+      top: 12px;
+      left: 12px;
+      padding: 12px 18px;
+      transform: translateY(-180%);
+      border: var(--line);
+      background: var(--acid);
+      font: 700 12px var(--mono);
+      text-transform: uppercase;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .page-width {
+      width: min(1320px, calc(100% - 48px));
+      margin-inline: auto;
+    }
+
+    .announcement {
+      overflow: hidden;
+      border-bottom: var(--line);
+      background: var(--acid);
+      font: 500 11px/1 var(--mono);
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .announcement-inner {
+      display: flex;
+      min-height: 34px;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 7px 20px;
+      white-space: nowrap;
+    }
+
+    .announcement-dot {
+      width: 8px;
+      height: 8px;
+      flex: 0 0 auto;
+      border: 1.5px solid var(--ink);
+      border-radius: 50%;
+      background: var(--coral);
+      animation: signalBlink 1.6s steps(2, end) infinite;
+    }
+
+    .site-header {
+      position: sticky;
+      z-index: 100;
+      top: 0;
+      border-bottom: var(--line);
+      background: rgba(246, 240, 223, .97);
+    }
+
+    .nav-shell {
+      position: relative;
+      display: flex;
+      min-height: 78px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      font: 500 19px/1 var(--display);
+      letter-spacing: -.03em;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 31px;
+      height: 31px;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      transform: rotate(-4deg);
+    }
+
+    .brand-mark i {
+      display: block;
+      border: 2px solid var(--ink);
+    }
+
+    .brand-mark i:nth-child(1) {
+      background: var(--coral);
+    }
+
+    .brand-mark i:nth-child(2) {
+      background: var(--blue);
+    }
+
+    .brand-mark i:nth-child(3) {
+      background: var(--acid);
+    }
+
+    .brand-mark i:nth-child(4) {
+      background: var(--paper);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(18px, 2.8vw, 38px);
+    }
+
+    .nav-links a {
+      position: relative;
+      font: 500 12px/1 var(--mono);
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .nav-links a:not(.nav-cta)::after {
+      position: absolute;
+      right: 0;
+      bottom: -9px;
+      left: 0;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      background: var(--blue);
+      content: "";
+      transition: transform .2s ease;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .nav-cta {
+      padding: 12px 15px;
+      border: 2px solid var(--ink);
+      background: var(--blue);
+      box-shadow: 3px 3px 0 var(--ink);
+      color: var(--white) !important;
+      transition: transform .16s ease, box-shadow .16s ease;
+    }
+
+    .nav-cta:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--ink);
+    }
+
+    .nav-cta:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 46px;
+      height: 42px;
+      border: var(--line);
+      background: var(--cream);
+      box-shadow: 3px 3px 0 var(--ink);
+      cursor: pointer;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      margin: auto;
+      background: var(--ink);
+      transition: transform .2s ease;
+    }
+
+    .menu-toggle span::before,
+    .menu-toggle span::after {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--ink);
+      content: "";
+    }
+
+    .menu-toggle span::before {
+      transform: translateY(-6px);
+    }
+
+    .menu-toggle span::after {
+      transform: translateY(4px);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(64px, 7vw, 100px) 0 88px;
+      border-bottom: var(--line);
+      background-image: radial-gradient(rgba(23, 33, 58, .11) 1px, transparent 1.2px);
+      background-size: 18px 18px;
+    }
+
+    .hero::before {
+      position: absolute;
+      top: 8%;
+      left: -90px;
+      width: 220px;
+      height: 220px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--acid);
+      content: "";
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(420px, .94fr);
+      align-items: center;
+      gap: clamp(40px, 6vw, 88px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font: 500 11px/1.2 var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .hero-kicker {
+      padding: 9px 12px;
+      transform: rotate(-1deg);
+      border: 2px solid var(--ink);
+      background: var(--acid);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .hero-kicker::before {
+      width: 7px;
+      height: 7px;
+      border: 1.5px solid var(--ink);
+      border-radius: 50%;
+      background: var(--coral);
+      content: "";
+    }
+
+    .hero h1 {
+      max-width: 820px;
+      margin: 25px 0 26px;
+      font: 400 clamp(4.4rem, 8.8vw, 8.9rem)/.86 var(--display);
+      letter-spacing: -.055em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 span {
+      display: inline-block;
+      color: var(--blue);
+      text-shadow: 5px 5px 0 var(--ink);
+    }
+
+    .hero-copy {
+      max-width: 650px;
+      margin: 0;
+      color: #41495d;
+      font-size: clamp(17px, 1.55vw, 20px);
+      font-weight: 500;
+      line-height: 1.65;
+    }
+
+    .hero-copy strong {
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 31px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 54px;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      box-shadow: 5px 5px 0 var(--ink);
+      font: 500 12px/1 var(--mono);
+      letter-spacing: .04em;
+      text-decoration: none;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+    }
+
+    .button:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 8px 8px 0 var(--ink);
+    }
+
+    .button:active {
+      transform: translate(3px, 3px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .button-primary {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .button-primary:hover {
+      background: var(--blue-dark);
+    }
+
+    .button-light {
+      background: var(--cream);
+      color: var(--ink);
+    }
+
+    .button-dark {
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .button-arrow {
+      font-size: 19px;
+      line-height: 0;
+      transition: transform .16s ease;
+    }
+
+    .button:hover .button-arrow {
+      transform: translateX(3px);
+    }
+
+    .hero-stats {
+      display: grid;
+      max-width: 650px;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 40px;
+      border-top: 2px solid var(--ink);
+    }
+
+    .hero-stat {
+      padding: 17px 14px 0 0;
+    }
+
+    .hero-stat + .hero-stat {
+      padding-left: 18px;
+      border-left: 1px solid rgba(23, 33, 58, .35);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font: 400 25px/1 var(--display);
+      letter-spacing: -.03em;
+    }
+
+    .hero-stat span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font: 500 10px/1.35 var(--mono);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .hero-stage {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .hero-orbit {
+      position: absolute;
+      z-index: -1;
+      width: min(580px, 114%);
+      aspect-ratio: 1;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background-color: var(--lavender);
+      background-image: radial-gradient(rgba(23, 33, 58, .21) 1.4px, transparent 1.5px);
+      background-size: 12px 12px;
+      box-shadow: inset 0 0 0 14px var(--paper), inset 0 0 0 16px var(--ink);
+    }
+
+    .orbit-scribble {
+      position: absolute;
+      z-index: 2;
+      top: 6%;
+      right: 0;
+      width: 112px;
+      padding: 12px 10px 10px;
+      transform: rotate(8deg);
+      border: 2px solid var(--ink);
+      background: var(--acid);
+      box-shadow: 4px 4px 0 var(--ink);
+      font: 500 10px/1.25 var(--mono);
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .orbit-scribble b {
+      display: block;
+      margin-bottom: 3px;
+      font: 400 24px/1 var(--display);
+    }
+
+    .hero-device {
+      position: relative;
+      width: min(430px, 100%);
+      transform: rotate(3deg);
+      border-radius: 24px;
+      box-shadow: 13px 15px 0 var(--ink);
+      animation: deviceFloat 6s ease-in-out infinite;
+    }
+
+    .product-shell {
+      --device-main: #ff695d;
+      --device-high: #ff998e;
+      --device-low: #cf454c;
+      --device-control: #4255e7;
+      --device-control-low: #2639b7;
+      --device-highlight: #d9ff55;
+      --device-button-ink: #fffdf7;
+    }
+
+    .product-shell.palette-pickle {
+      --device-main: #d9ff55;
+      --device-high: #efffab;
+      --device-low: #8cbb27;
+      --device-control: #ff5e5a;
+      --device-control-low: #c63b42;
+      --device-highlight: #4255e7;
+      --device-button-ink: #17213a;
+    }
+
+    .product-shell.palette-moonmilk {
+      --device-main: #bcaaff;
+      --device-high: #ded4ff;
+      --device-low: #7767c8;
+      --device-control: #17213a;
+      --device-control-low: #060b19;
+      --device-highlight: #d9ff55;
+      --device-button-ink: #fffdf7;
+    }
+
+    .device-top,
+    .device-bottom {
+      position: relative;
+      overflow: hidden;
+      border: 3px solid var(--ink);
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .45), transparent 29%),
+        linear-gradient(180deg, var(--device-high), var(--device-main) 47%, var(--device-low));
+      box-shadow: inset 0 4px 0 rgba(255, 255, 255, .32), inset 0 -7px 0 rgba(23, 33, 58, .1);
+    }
+
+    .device-top {
+      padding: 24px 27px 28px;
+      border-bottom: 0;
+      border-radius: 24px 24px 13px 13px;
+    }
+
+    .device-bottom {
+      padding: 25px 27px 29px;
+      border-radius: 13px 13px 24px 24px;
+    }
+
+    .device-top::after,
+    .device-bottom::after {
+      position: absolute;
+      right: 10px;
+      bottom: 9px;
+      left: 10px;
+      height: 1px;
+      background: rgba(23, 33, 58, .17);
+      content: "";
+    }
+
+    .device-hardware-label {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(23, 33, 58, .64);
+      font: 500 7px/1 var(--mono);
+      letter-spacing: .18em;
+      white-space: nowrap;
+    }
+
+    .device-screw {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .25);
+    }
+
+    .device-screw::after {
+      position: absolute;
+      top: 2px;
+      left: 1px;
+      width: 3px;
+      height: 1px;
+      transform: rotate(-20deg);
+      background: var(--ink);
+      content: "";
+    }
+
+    .device-screw.one {
+      top: 12px;
+      left: 12px;
+    }
+
+    .device-screw.two {
+      top: 12px;
+      right: 12px;
+    }
+
+    .screen-bezel {
+      position: relative;
+      padding: 15px 16px 11px;
+      border: 3px solid #080d1c;
+      border-radius: 15px;
+      background: #11172a;
+      box-shadow: inset 0 2px 0 rgba(255, 255, 255, .08), 0 2px 0 rgba(255, 255, 255, .24);
+    }
+
+    .game-screen {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      border: 2px solid #050816;
+      outline: none;
+      background: #111735;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, .08);
+    }
+
+    .game-screen:focus-visible {
+      outline: 4px solid var(--acid);
+      outline-offset: 3px;
+    }
+
+    .screen-game {
+      width: 100%;
+      height: 100%;
+    }
+
+    .screen-glass {
+      position: absolute;
+      z-index: 4;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 0 49.8%, rgba(255, 255, 255, .09) 50%, transparent 50.2%),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, .035) 0 1px, transparent 1px 4px),
+        linear-gradient(130deg, rgba(255, 255, 255, .12), transparent 26%);
+      box-shadow: inset 0 0 22px rgba(0, 0, 0, .34);
+    }
+
+    .screen-live {
+      position: absolute;
+      z-index: 5;
+      top: 7px;
+      right: 7px;
+      padding: 3px 5px;
+      border: 1px solid #111735;
+      background: var(--acid);
+      color: #111735;
+      font: 500 7px/1 var(--mono);
+      letter-spacing: .08em;
+      pointer-events: none;
+    }
+
+    .screen-overlay {
+      position: absolute;
+      z-index: 6;
+      inset: 0;
+      display: grid;
+      place-content: center;
+      background: rgba(8, 13, 28, .88);
+      color: var(--cream);
+      text-align: center;
+    }
+
+    .screen-overlay strong {
+      font: 400 clamp(18px, 3vw, 27px)/1 var(--display);
+      letter-spacing: .04em;
+    }
+
+    .screen-overlay span {
+      margin-top: 7px;
+      color: var(--acid);
+      font: 500 8px/1 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .screen-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 2px 0;
+      color: rgba(255, 255, 255, .7);
+      font: 500 6.5px/1 var(--mono);
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .power-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    .power-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--device-highlight);
+      box-shadow: 0 0 5px var(--device-highlight);
+    }
+
+    .device-hinge {
+      position: relative;
+      z-index: 2;
+      width: 84%;
+      height: 28px;
+      margin: -2px auto;
+      border: 3px solid var(--ink);
+      border-radius: 8px;
+      background: #0d1426;
+      box-shadow: inset 0 3px 0 rgba(255, 255, 255, .1);
+    }
+
+    .device-hinge::before,
+    .device-hinge::after {
+      position: absolute;
+      top: 4px;
+      width: 38%;
+      height: 14px;
+      border: 1px solid rgba(255, 255, 255, .3);
+      border-radius: 10px;
+      background: #29334a;
+      content: "";
+    }
+
+    .device-hinge::before {
+      left: 4%;
+    }
+
+    .device-hinge::after {
+      right: 4%;
+    }
+
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3%;
+      padding: 5px 2% 0;
+    }
+
+    .dpad,
+    .face-buttons {
+      position: relative;
+      width: clamp(82px, 28%, 108px);
+      aspect-ratio: 1;
+      flex: 0 0 auto;
+    }
+
+    .control-key {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--ink);
+      background: linear-gradient(145deg, var(--device-control), var(--device-control-low));
+      box-shadow: 0 4px 0 var(--ink), inset 0 2px 0 rgba(255, 255, 255, .2);
+      color: var(--device-button-ink);
+      font: 500 10px/1 var(--mono);
+      cursor: pointer;
+      transition: transform .08s ease, box-shadow .08s ease;
+    }
+
+    .control-key:hover {
+      filter: brightness(1.1);
+    }
+
+    .control-key.pressed,
+    .control-key:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 var(--ink), inset 0 2px 0 rgba(255, 255, 255, .12);
+    }
+
+    .dpad-key {
+      width: 38%;
+      height: 38%;
+    }
+
+    .dpad-up {
+      top: 0;
+      left: 31%;
+      border-radius: 7px 7px 2px 2px;
+    }
+
+    .dpad-right {
+      top: 31%;
+      right: 0;
+      border-radius: 2px 7px 7px 2px;
+    }
+
+    .dpad-down {
+      bottom: 0;
+      left: 31%;
+      border-radius: 2px 2px 7px 7px;
+    }
+
+    .dpad-left {
+      top: 31%;
+      left: 0;
+      border-radius: 7px 2px 2px 7px;
+    }
+
+    .dpad-center {
+      position: absolute;
+      z-index: 2;
+      top: 31%;
+      left: 31%;
+      width: 38%;
+      height: 38%;
+      border: 2px solid var(--ink);
+      background: #121a30;
+    }
+
+    .dpad-center::after {
+      width: 8px;
+      height: 8px;
+      border: 1px solid rgba(255, 255, 255, .24);
+      border-radius: 50%;
+      content: "";
+    }
+
+    .face-key {
+      width: 31%;
+      height: 31%;
+      border-radius: 50%;
+    }
+
+    .face-y {
+      top: 2%;
+      left: 34.5%;
+    }
+
+    .face-x {
+      top: 34.5%;
+      right: 2%;
+    }
+
+    .face-a {
+      right: 34.5%;
+      bottom: 2%;
+    }
+
+    .face-b {
+      top: 34.5%;
+      left: 2%;
+      background: linear-gradient(145deg, var(--device-highlight), color-mix(in srgb, var(--device-highlight) 70%, var(--ink)));
+      color: var(--ink);
+    }
+
+    .control-center {
+      display: flex;
+      min-width: 0;
+      flex: 1;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding-top: 4px;
+    }
+
+    .speaker-dots {
+      width: 58px;
+      height: 26px;
+      background-image: radial-gradient(circle, rgba(23, 33, 58, .58) 0 1.3px, transparent 1.5px);
+      background-size: 7px 7px;
+      opacity: .75;
+    }
+
+    .start-select {
+      display: flex;
+      gap: 7px;
+    }
+
+    .start-select .control-key {
+      position: relative;
+      width: clamp(34px, 13%, 45px);
+      height: 23px;
+      border-radius: 10px;
+      font-size: 6px;
+    }
+
+    .device-molded-label {
+      margin-top: 2px;
+      color: rgba(23, 33, 58, .68);
+      font: 500 6px/1 var(--mono);
+      letter-spacing: .14em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .device-sticker {
+      position: absolute;
+      z-index: 3;
+      right: -25px;
+      bottom: 24px;
+      display: grid;
+      width: 88px;
+      height: 88px;
+      place-items: center;
+      transform: rotate(10deg);
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--acid);
+      box-shadow: 4px 4px 0 var(--ink);
+      font: 500 8px/1.25 var(--mono);
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .device-sticker strong {
+      display: block;
+      font: 400 25px/1 var(--display);
+    }
+
+    .stage-callout {
+      position: absolute;
+      z-index: 4;
+      bottom: 12%;
+      left: -2%;
+      max-width: 145px;
+      padding: 11px 12px;
+      transform: rotate(-4deg);
+      border: 2px solid var(--ink);
+      background: var(--cream);
+      box-shadow: 4px 4px 0 var(--ink);
+      font: 500 9px/1.4 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .stage-callout::after {
+      position: absolute;
+      right: -37px;
+      bottom: 18px;
+      width: 38px;
+      height: 2px;
+      transform: rotate(-18deg);
+      background: var(--ink);
+      content: "";
+    }
+
+    .hero-device.demo-live {
+      animation: demoNudge .5s ease-in-out;
+    }
+
+    #gameEnemy {
+      animation: enemyPatrol 3.8s steps(8, end) infinite alternate;
+    }
+
+    #gameEnemy.knocked {
+      animation: enemyKnocked .4s ease-out both;
+    }
+
+    #gameCoin {
+      animation: coinFloat 1.5s steps(3, end) infinite;
+    }
+
+    #gameCoin.caught {
+      animation: coinCaught .3s ease-out both;
+    }
+
+    .game-screen.bonk {
+      animation: screenBonk .25s steps(2, end);
+    }
+
+    .screen-reader-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+      clip: rect(1px, 1px, 1px, 1px) !important;
+      clip-path: inset(50%) !important;
+      white-space: nowrap !important;
+    }
+
+    .ticker {
+      overflow: hidden;
+      border-bottom: var(--line);
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+
+    .ticker-set {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 17px 28px;
+      font: 400 14px/1 var(--display);
+      letter-spacing: .035em;
+      white-space: nowrap;
+    }
+
+    .ticker-item::after {
+      color: var(--acid);
+      font-size: 20px;
+      content: "✦";
+    }
+
+    .section {
+      position: relative;
+      padding: clamp(88px, 10vw, 145px) 0;
+    }
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, .55fr);
+      align-items: end;
+      gap: 50px;
+      margin-bottom: clamp(44px, 6vw, 76px);
+    }
+
+    .section-kicker {
+      margin-bottom: 17px;
+      color: var(--blue);
+    }
+
+    .section-title {
+      max-width: 1000px;
+      margin: 0;
+      font: 400 clamp(3.1rem, 6.4vw, 6.7rem)/.92 var(--display);
+      letter-spacing: -.045em;
+      text-transform: uppercase;
+    }
+
+    .section-intro {
+      margin: 0 0 6px;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.7;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .feature-card {
+      position: relative;
+      display: flex;
+      min-height: 345px;
+      overflow: hidden;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(24px, 3vw, 38px);
+      border: 2px solid var(--ink);
+      border-radius: 22px;
+      box-shadow: 6px 6px 0 var(--ink);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 9px 9px 0 var(--ink);
+    }
+
+    .feature-a {
+      min-height: 475px;
+      grid-column: span 7;
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .feature-b {
+      grid-column: span 5;
+      background: var(--coral);
+    }
+
+    .feature-c {
+      grid-column: span 4;
+      background: var(--acid);
+    }
+
+    .feature-d {
+      grid-column: span 4;
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .feature-e {
+      grid-column: span 4;
+      background: var(--lavender);
+    }
+
+    .feature-top {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-index {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      font: 500 10px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .card-index::before {
+      width: 8px;
+      height: 8px;
+      border: 1.5px solid currentColor;
+      border-radius: 50%;
+      background: currentColor;
+      content: "";
+    }
+
+    .feature-card h3 {
+      max-width: 600px;
+      margin: 0;
+      font: 400 clamp(2rem, 3.3vw, 3.45rem)/.98 var(--display);
+      letter-spacing: -.035em;
+      text-transform: uppercase;
+    }
+
+    .feature-card p {
+      max-width: 480px;
+      margin: 16px 0 0;
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .feature-a p,
+    .feature-d p {
+      color: rgba(255, 255, 255, .78);
+    }
+
+    .display-demo {
+      position: absolute;
+      right: -24px;
+      bottom: -14px;
+      width: min(530px, 66%);
+      overflow: hidden;
+      transform: rotate(-3deg);
+      border: 3px solid var(--ink);
+      border-radius: 18px 0 0 0;
+      background: #10172d;
+      box-shadow: 7px 7px 0 rgba(23, 33, 58, .48);
+    }
+
+    .display-demo-bar {
+      display: flex;
+      height: 27px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      border-bottom: 2px solid var(--ink);
+      color: #dfe4ff;
+      font: 500 7px/1 var(--mono);
+      letter-spacing: .08em;
+    }
+
+    .display-demo-bar i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--acid);
+      box-shadow: 0 0 5px var(--acid);
+    }
+
+    .display-demo svg {
+      width: 100%;
+    }
+
+    .weight-visual {
+      position: absolute;
+      right: 22px;
+      bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .weight-number {
+      display: grid;
+      width: 118px;
+      height: 118px;
+      place-content: center;
+      transform: rotate(5deg);
+      border: 3px solid var(--ink);
+      border-radius: 50%;
+      background: var(--acid);
+      box-shadow: 5px 5px 0 var(--ink);
+      text-align: center;
+    }
+
+    .weight-number strong {
+      font: 400 48px/.85 var(--display);
+      letter-spacing: -.06em;
+    }
+
+    .weight-number span {
+      margin-top: 5px;
+      font: 500 8px/1 var(--mono);
+      letter-spacing: .1em;
+    }
+
+    .mini-weight-device {
+      position: relative;
+      width: 47px;
+      height: 86px;
+      transform: rotate(13deg);
+      border: 3px solid var(--ink);
+      border-radius: 9px;
+      background: var(--paper);
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+
+    .mini-weight-device::before {
+      position: absolute;
+      top: 12px;
+      left: 7px;
+      width: 27px;
+      height: 25px;
+      border: 2px solid var(--ink);
+      background: var(--blue);
+      content: "";
+    }
+
+    .mini-weight-device::after {
+      position: absolute;
+      right: 5px;
+      bottom: 8px;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--coral);
+      content: "";
+    }
+
+    .battery-visual {
+      position: relative;
+      height: 142px;
+      margin-top: 32px;
+    }
+
+    .battery-shell {
+      position: absolute;
+      top: 17px;
+      left: 5%;
+      width: 82%;
+      height: 82px;
+      padding: 9px;
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      background: var(--paper);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+
+    .battery-shell::after {
+      position: absolute;
+      top: 23px;
+      right: -18px;
+      width: 15px;
+      height: 34px;
+      border: 3px solid var(--ink);
+      border-left: 0;
+      border-radius: 0 7px 7px 0;
+      background: var(--paper);
+      content: "";
+    }
+
+    .battery-fill {
+      display: flex;
+      height: 100%;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 13px;
+      border: 2px solid var(--ink);
+      background: var(--blue);
+      color: var(--white);
+      font: 400 25px/1 var(--display);
+      letter-spacing: -.04em;
+    }
+
+    .battery-fill small {
+      font: 500 7px/1 var(--mono);
+      letter-spacing: .1em;
+    }
+
+    .multiplayer-visual {
+      display: flex;
+      min-height: 115px;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+      margin-top: 25px;
+    }
+
+    .mini-controller {
+      position: relative;
+      width: 120px;
+      height: 69px;
+      border: 3px solid currentColor;
+      border-radius: 38px 38px 27px 27px;
+      background: var(--paper);
+      box-shadow: 5px 5px 0 var(--ink);
+      color: var(--ink);
+    }
+
+    .mini-controller::before,
+    .mini-controller::after {
+      position: absolute;
+      background: var(--ink);
+      content: "";
+    }
+
+    .mini-controller::before {
+      top: 29px;
+      left: 22px;
+      width: 27px;
+      height: 8px;
+    }
+
+    .mini-controller::after {
+      top: 21px;
+      left: 32px;
+      width: 8px;
+      height: 25px;
+    }
+
+    .controller-buttons {
+      position: absolute;
+      top: 17px;
+      right: 18px;
+      display: grid;
+      grid-template-columns: 8px 8px;
+      gap: 7px;
+    }
+
+    .controller-buttons i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--coral);
+    }
+
+    .mini-controller:nth-child(2) {
+      transform: rotate(5deg) translateY(10px);
+    }
+
+    .sd-card {
+      position: relative;
+      width: 165px;
+      height: 108px;
+      margin: 25px auto 0;
+      padding: 20px 16px 12px;
+      border: 3px solid var(--ink);
+      border-radius: 11px;
+      background: var(--cream);
+      box-shadow: 7px 7px 0 var(--ink);
+      transform: rotate(-4deg);
+    }
+
+    .sd-card::before {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      width: 26px;
+      height: 13px;
+      border: 2px solid var(--ink);
+      border-top: 0;
+      background: var(--paper);
+      content: "";
+    }
+
+    .sd-card strong {
+      display: block;
+      font: 400 31px/1 var(--display);
+      letter-spacing: -.04em;
+    }
+
+    .sd-card span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font: 500 7px/1.3 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .specs-section {
+      overflow: hidden;
+      border-block: var(--line);
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .specs-section .section-kicker {
+      color: var(--acid);
+    }
+
+    .spec-layout {
+      display: grid;
+      grid-template-columns: minmax(320px, .86fr) minmax(0, 1.14fr);
+      gap: clamp(50px, 7vw, 100px);
+      align-items: center;
+    }
+
+    .blueprint-board {
+      position: relative;
+      overflow: hidden;
+      padding: 24px;
+      border: 2px solid rgba(246, 240, 223, .5);
+      border-radius: 22px;
+      background-color: #202a47;
+      background-image:
+        linear-gradient(rgba(246, 240, 223, .06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(246, 240, 223, .06) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    .blueprint-stamp {
+      position: absolute;
+      z-index: 2;
+      top: 16px;
+      right: 16px;
+      padding: 8px 10px;
+      transform: rotate(5deg);
+      border: 2px solid var(--acid);
+      color: var(--acid);
+      font: 500 8px/1.3 var(--mono);
+      letter-spacing: .08em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .blueprint-svg {
+      width: 100%;
+      color: var(--paper);
+    }
+
+    .spec-copy .section-title {
+      margin-bottom: 35px;
+    }
+
+    .spec-list {
+      margin: 0;
+      border-top: 1px solid rgba(246, 240, 223, .35);
+    }
+
+    .spec-row {
+      display: grid;
+      grid-template-columns: minmax(125px, .7fr) minmax(0, 1.3fr);
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(246, 240, 223, .35);
+    }
+
+    .spec-row dt {
+      color: var(--acid);
+      font: 500 10px/1.4 var(--mono);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .spec-row dd {
+      margin: 0;
+      font-size: clamp(16px, 1.8vw, 21px);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .spec-row dd span {
+      display: block;
+      margin-top: 4px;
+      color: rgba(246, 240, 223, .62);
+      font: 400 10px/1.5 var(--mono);
+    }
+
+    .box-note {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 28px;
+    }
+
+    .box-note span {
+      padding: 8px 10px;
+      border: 1px solid rgba(246, 240, 223, .4);
+      border-radius: 99px;
+      color: rgba(246, 240, 223, .76);
+      font: 500 9px/1 var(--mono);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .games-section {
+      background: #e9e1ff;
+    }
+
+    .games-section .section-kicker {
+      color: #5a41c8;
+    }
+
+    .games-intro-line {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 26px;
+      color: var(--muted);
+      font: 500 11px/1.4 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .games-intro-line::before {
+      width: 70px;
+      height: 3px;
+      background: var(--ink);
+      content: "";
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 26px;
+    }
+
+    .game-card {
+      overflow: hidden;
+      border: 2px solid var(--ink);
+      border-radius: 22px;
+      background: var(--cream);
+      box-shadow: 7px 7px 0 var(--ink);
+      transition: box-shadow .2s ease;
+    }
+
+    .game-card:hover {
+      box-shadow: 11px 11px 0 var(--ink);
+    }
+
+    .game-art {
+      overflow: hidden;
+      margin: 0;
+      border-bottom: 2px solid var(--ink);
+      background: var(--ink);
+    }
+
+    .game-art svg {
+      width: 100%;
+      height: auto;
+      transition: transform .45s cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .game-card:hover .game-art svg {
+      transform: scale(1.025);
+    }
+
+    .game-copy {
+      padding: 26px 27px 29px;
+    }
+
+    .game-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      font: 500 9px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .game-genre {
+      padding: 7px 9px;
+      border: 1.5px solid var(--ink);
+      background: var(--acid);
+    }
+
+    .game-card h3 {
+      margin: 21px 0 11px;
+      font: 400 clamp(2rem, 3.6vw, 3.6rem)/.95 var(--display);
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+    }
+
+    .game-card p {
+      max-width: 540px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.65;
+    }
+
+    .more-games {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-top: 30px;
+      padding: 22px 26px;
+      border: 2px solid var(--ink);
+      background: var(--acid);
+      box-shadow: 6px 6px 0 var(--ink);
+      font: 400 clamp(1.3rem, 2.4vw, 2.1rem)/1.15 var(--display);
+      text-transform: uppercase;
+    }
+
+    .more-games span {
+      flex: 0 0 auto;
+      padding: 7px 9px;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      font: 500 9px/1 var(--mono);
+    }
+
+    .palette-section {
+      overflow: hidden;
+      border-top: var(--line);
+      background: var(--acid);
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(370px, .85fr);
+      gap: clamp(50px, 8vw, 110px);
+      align-items: center;
+    }
+
+    .palette-copy .section-title {
+      max-width: 740px;
+    }
+
+    .palette-copy > p {
+      max-width: 660px;
+      margin: 24px 0 0;
+      color: #3d4753;
+      font-size: 16px;
+      font-weight: 650;
+      line-height: 1.7;
+    }
+
+    .palette-options {
+      display: grid;
+      gap: 13px;
+      margin-top: 35px;
+    }
+
+    .palette-choice {
+      display: grid;
+      width: 100%;
+      grid-template-columns: 70px minmax(0, 1fr) 31px;
+      align-items: center;
+      gap: 16px;
+      padding: 13px 14px;
+      border: 2px solid var(--ink);
+      background: var(--cream);
+      box-shadow: 4px 4px 0 var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: transform .16s ease, box-shadow .16s ease, background-color .16s ease;
+    }
+
+    .palette-choice:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--ink);
+    }
+
+    .palette-choice[aria-pressed="true"] {
+      background: var(--blue);
+      color: var(--white);
+      box-shadow: 7px 7px 0 var(--ink);
+      transform: translate(-3px, -3px);
+    }
+
+    .palette-swatch {
+      position: relative;
+      display: block;
+      width: 66px;
+      height: 48px;
+    }
+
+    .palette-swatch i {
+      position: absolute;
+      top: 7px;
+      display: block;
+      width: 39px;
+      height: 35px;
+      border: 2px solid var(--ink);
+    }
+
+    .palette-swatch i:nth-child(1) {
+      left: 1px;
+      z-index: 3;
+    }
+
+    .palette-swatch i:nth-child(2) {
+      left: 14px;
+      z-index: 2;
+    }
+
+    .palette-swatch i:nth-child(3) {
+      left: 27px;
+      z-index: 1;
+    }
+
+    .palette-name strong {
+      display: block;
+      font: 400 18px/1 var(--display);
+      letter-spacing: -.02em;
+      text-transform: uppercase;
+    }
+
+    .palette-name span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font: 500 8px/1.3 var(--mono);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    .palette-choice[aria-pressed="true"] .palette-name span {
+      color: rgba(255, 255, 255, .72);
+    }
+
+    .palette-check {
+      display: grid;
+      width: 27px;
+      height: 27px;
+      place-items: center;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--ink);
+      font: 700 13px/1 var(--mono);
+      opacity: 0;
+      transform: scale(.65);
+      transition: opacity .16s ease, transform .16s ease;
+    }
+
+    .palette-choice[aria-pressed="true"] .palette-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .palette-stage {
+      position: relative;
+      min-height: 560px;
+      overflow: hidden;
+      border: 2px solid var(--ink);
+      border-radius: 26px;
+      background-color: var(--cream);
+      background-image: radial-gradient(rgba(23, 33, 58, .15) 1.2px, transparent 1.3px);
+      background-size: 13px 13px;
+      box-shadow: 9px 9px 0 var(--ink);
+    }
+
+    .palette-stage::before {
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      width: 470px;
+      height: 470px;
+      transform: translateX(-50%);
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--lavender);
+      content: "";
+    }
+
+    .palette-label {
+      position: absolute;
+      z-index: 4;
+      top: 20px;
+      left: 20px;
+      padding: 10px 12px;
+      transform: rotate(-3deg);
+      border: 2px solid var(--ink);
+      background: var(--coral);
+      box-shadow: 3px 3px 0 var(--ink);
+      font: 500 9px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .palette-device-wrap {
+      position: absolute;
+      z-index: 2;
+      top: 63px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-4deg);
+    }
+
+    .mini-device {
+      position: relative;
+      width: 275px;
+      height: 350px;
+      border: 3px solid var(--ink);
+      border-radius: 28px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, .4), transparent 27%),
+        linear-gradient(180deg, var(--device-high), var(--device-main) 48%, var(--device-low));
+      box-shadow: 10px 12px 0 var(--ink);
+    }
+
+    .mini-device::before {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      width: 44px;
+      height: 5px;
+      transform: translateX(-50%);
+      border-radius: 99px;
+      background: rgba(23, 33, 58, .45);
+      content: "";
+    }
+
+    .mini-device-screen {
+      position: absolute;
+      top: 38px;
+      left: 25px;
+      width: calc(100% - 50px);
+      padding: 10px;
+      border: 3px solid var(--ink);
+      border-radius: 14px;
+      background: #10172c;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1);
+    }
+
+    .mini-device-screen svg {
+      border: 2px solid #050816;
+      border-radius: 4px;
+    }
+
+    .mini-device-controls {
+      position: absolute;
+      right: 24px;
+      bottom: 30px;
+      left: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mini-dpad {
+      position: relative;
+      width: 67px;
+      height: 67px;
+    }
+
+    .mini-dpad::before,
+    .mini-dpad::after {
+      position: absolute;
+      background: linear-gradient(145deg, var(--device-control), var(--device-control-low));
+      box-shadow: 0 3px 0 var(--ink);
+      content: "";
+    }
+
+    .mini-dpad::before {
+      top: 20px;
+      left: 0;
+      width: 67px;
+      height: 27px;
+      border: 2px solid var(--ink);
+    }
+
+    .mini-dpad::after {
+      top: 0;
+      left: 20px;
+      width: 27px;
+      height: 67px;
+      border: 2px solid var(--ink);
+    }
+
+    .mini-face {
+      position: relative;
+      width: 71px;
+      height: 71px;
+    }
+
+    .mini-face i {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--device-control);
+      box-shadow: 0 3px 0 var(--ink);
+    }
+
+    .mini-face i:nth-child(1) {
+      top: 0;
+      left: 24px;
+    }
+
+    .mini-face i:nth-child(2) {
+      top: 24px;
+      right: 0;
+    }
+
+    .mini-face i:nth-child(3) {
+      bottom: 0;
+      left: 24px;
+    }
+
+    .mini-face i:nth-child(4) {
+      top: 24px;
+      left: 0;
+      background: var(--device-highlight);
+    }
+
+    .palette-caption {
+      position: absolute;
+      z-index: 3;
+      right: 20px;
+      bottom: 18px;
+      left: 20px;
+      padding-top: 12px;
+      border-top: 2px solid var(--ink);
+      color: var(--muted);
+      font: 500 9px/1.4 var(--mono);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .palette-caption strong {
+      color: var(--ink);
+    }
+
+    .preorder-section {
+      overflow: hidden;
+      border-top: var(--line);
+      background: var(--coral);
+    }
+
+    .preorder-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(340px, .88fr);
+      gap: clamp(45px, 7vw, 90px);
+      padding: clamp(35px, 6vw, 78px);
+      border: 3px solid var(--ink);
+      border-radius: 28px;
+      background: var(--cream);
+      box-shadow: 12px 12px 0 var(--ink);
+    }
+
+    .preorder-card::before {
+      position: absolute;
+      top: 27px;
+      right: 27px;
+      width: 84px;
+      height: 24px;
+      transform: rotate(4deg);
+      background: rgba(217, 255, 85, .85);
+      clip-path: polygon(3% 10%, 98% 0, 95% 88%, 0 100%);
+      content: "";
+    }
+
+    .batch-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border: 2px solid var(--ink);
+      background: var(--acid);
+      box-shadow: 3px 3px 0 var(--ink);
+      font: 500 9px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .preorder-copy .section-title {
+      margin-top: 28px;
+      font-size: clamp(3.1rem, 5.7vw, 6rem);
+    }
+
+    .price-line {
+      display: flex;
+      align-items: flex-end;
+      gap: 18px;
+      margin-top: 34px;
+    }
+
+    .price {
+      font: 400 clamp(4.5rem, 8vw, 8.3rem)/.78 var(--display);
+      letter-spacing: -.07em;
+    }
+
+    .price-note {
+      max-width: 180px;
+      padding-bottom: 5px;
+      color: var(--muted);
+      font: 500 9px/1.45 var(--mono);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .preorder-perks {
+      display: grid;
+      max-width: 660px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 24px;
+      margin: 35px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .preorder-perks li {
+      position: relative;
+      padding-left: 20px;
+      color: #465066;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .preorder-perks li::before {
+      position: absolute;
+      top: 5px;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      transform: rotate(45deg);
+      border: 1.5px solid var(--ink);
+      background: var(--acid);
+      content: "";
+    }
+
+    .countdown-panel {
+      margin-top: 40px;
+      padding: 21px 22px;
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      box-shadow: 5px 5px 0 var(--blue);
+    }
+
+    .countdown-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 17px;
+      color: var(--acid);
+      font: 500 9px/1 var(--mono);
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .countdown-label i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--coral);
+      animation: signalBlink 1.5s steps(2, end) infinite;
+    }
+
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .countdown-unit {
+      display: grid;
+      gap: 7px;
+      text-align: center;
+    }
+
+    .countdown-unit strong {
+      display: grid;
+      min-height: 57px;
+      place-items: center;
+      border: 1px solid rgba(246, 240, 223, .35);
+      background: #232d49;
+      font: 400 clamp(1.5rem, 3vw, 2.6rem)/1 var(--display);
+    }
+
+    .countdown-unit span {
+      color: rgba(246, 240, 223, .62);
+      font: 500 7px/1 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .order-form {
+      align-self: center;
+      padding: clamp(24px, 3.5vw, 38px);
+      border: 2px solid var(--ink);
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: 7px 7px 0 var(--ink);
+    }
+
+    .order-form h3 {
+      margin: 0 0 7px;
+      font: 400 27px/1.05 var(--display);
+      letter-spacing: -.03em;
+      text-transform: uppercase;
+    }
+
+    .form-intro {
+      margin: 0 0 25px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.6;
+    }
+
+    .field {
+      margin-top: 16px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font: 500 9px/1 var(--mono);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      min-height: 49px;
+      padding: 12px 13px;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      background: var(--white);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .field input::placeholder {
+      color: #8b8d97;
+    }
+
+    .field select {
+      appearance: auto;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(110px, .55fr);
+      gap: 12px;
+    }
+
+    .check-field {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 18px 0;
+      color: #50586b;
+      font-size: 10px;
+      font-weight: 650;
+      line-height: 1.5;
+    }
+
+    .check-field input {
+      width: 17px;
+      height: 17px;
+      flex: 0 0 auto;
+      margin: 1px 0 0;
+      accent-color: var(--blue);
+    }
+
+    .order-form .button {
+      width: 100%;
+    }
+
+    .form-trust {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 15px;
+      margin-top: 17px;
+      color: var(--muted);
+      font: 500 8px/1.3 var(--mono);
+      letter-spacing: .04em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .form-status {
+      min-height: 22px;
+      margin: 13px 0 0;
+      color: #214a33;
+      font: 700 11px/1.5 var(--mono);
+      text-align: center;
+    }
+
+    .faq-section {
+      background: var(--paper);
+    }
+
+    .faq-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, .7fr) minmax(0, 1.3fr);
+      gap: clamp(55px, 9vw, 130px);
+      align-items: start;
+    }
+
+    .faq-aside {
+      position: sticky;
+      top: 120px;
+    }
+
+    .faq-aside p {
+      max-width: 400px;
+      margin: 25px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.7;
+    }
+
+    .faq-aside .button {
+      margin-top: 28px;
+    }
+
+    .faq-list {
+      border-top: 2px solid var(--ink);
+    }
+
+    .faq-list details {
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .faq-list summary {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 38px;
+      align-items: center;
+      gap: 24px;
+      padding: 25px 0;
+      font: 400 clamp(1.25rem, 2.3vw, 2rem)/1.15 var(--display);
+      letter-spacing: -.025em;
+      list-style: none;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-plus {
+      position: relative;
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--acid);
+      transition: transform .2s ease, background-color .2s ease;
+    }
+
+    .faq-plus::before,
+    .faq-plus::after {
+      position: absolute;
+      width: 12px;
+      height: 2px;
+      background: var(--ink);
+      content: "";
+    }
+
+    .faq-plus::after {
+      transform: rotate(90deg);
+      transition: transform .2s ease;
+    }
+
+    .faq-list details[open] .faq-plus {
+      transform: rotate(180deg);
+      background: var(--coral);
+    }
+
+    .faq-list details[open] .faq-plus::after {
+      transform: rotate(0);
+    }
+
+    .faq-answer {
+      max-width: 680px;
+      padding: 0 64px 27px 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.75;
+    }
+
+    .faq-answer p {
+      margin: 0;
+    }
+
+    .site-footer {
+      position: relative;
+      overflow: hidden;
+      border-top: var(--line);
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .footer-main {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr .7fr;
+      gap: 50px;
+      padding: 75px 0 58px;
+    }
+
+    .footer-brand .brand {
+      color: var(--paper);
+    }
+
+    .footer-tagline {
+      max-width: 460px;
+      margin: 23px 0 0;
+      color: rgba(246, 240, 223, .7);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.7;
+    }
+
+    .footer-column h3 {
+      margin: 0 0 18px;
+      color: var(--acid);
+      font: 500 9px/1 var(--mono);
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .footer-column a {
+      display: block;
+      width: fit-content;
+      margin: 11px 0;
+      color: rgba(246, 240, 223, .8);
+      font-size: 12px;
+      font-weight: 650;
+      text-decoration: none;
+    }
+
+    .footer-column a:hover {
+      color: var(--acid);
+      text-decoration: underline;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+      padding: 20px 0 23px;
+      border-top: 1px solid rgba(246, 240, 223, .28);
+      color: rgba(246, 240, 223, .56);
+      font: 500 9px/1.4 var(--mono);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .footer-wordmark {
+      margin: 0;
+      overflow: hidden;
+      color: var(--paper);
+      font: 400 clamp(5.3rem, 16.4vw, 15rem)/.78 var(--display);
+      letter-spacing: -.075em;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .footer-wordmark span {
+      color: var(--coral);
+    }
+
+    @keyframes signalBlink {
+      0%, 45% { opacity: 1; }
+      46%, 100% { opacity: .3; }
+    }
+
+    @keyframes deviceFloat {
+      0%, 100% { transform: rotate(3deg) translateY(0); }
+      50% { transform: rotate(2.2deg) translateY(-9px); }
+    }
+
+    @keyframes demoNudge {
+      0%, 100% { transform: rotate(3deg) translate(0, 0); }
+      35% { transform: rotate(-1deg) translate(-5px, -5px); }
+      70% { transform: rotate(4deg) translate(4px, 2px); }
+    }
+
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
+    }
+
+    @keyframes enemyPatrol {
+      from { transform: translateX(0); }
+      to { transform: translateX(58px); }
+    }
+
+    @keyframes enemyKnocked {
+      0% { transform: translateX(0) rotate(0); }
+      35% { transform: translateX(-9px) rotate(-12deg); }
+      100% { transform: translateX(-24px) rotate(-26deg); opacity: .55; }
+    }
+
+    @keyframes coinFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    @keyframes coinCaught {
+      to { opacity: 0; transform: translateY(-18px) scale(.4); }
+    }
+
+    @keyframes screenBonk {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      50% { transform: translateX(3px); }
+      75% { transform: translateX(-2px); }
+    }
+
+    .js .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .72s cubic-bezier(.2, .7, .2, 1), transform .72s cubic-bezier(.2, .7, .2, 1);
+      transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    .js .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1120px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(365px, .8fr);
+        gap: 35px;
+      }
+
+      .hero h1 {
+        font-size: clamp(4.1rem, 8.4vw, 7rem);
+      }
+
+      .device-top {
+        padding-inline: 23px;
+      }
+
+      .device-bottom {
+        padding-inline: 23px;
+      }
+
+      .stage-callout {
+        left: 0;
+      }
+
+      .palette-grid {
+        gap: 50px;
+      }
+
+      .preorder-card {
+        gap: 45px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        gap: 18px;
+      }
+
+      .nav-links > a:not(.nav-cta) {
+        display: none;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 70px;
+      }
+
+      .hero-copy-block {
+        max-width: 780px;
+      }
+
+      .hero h1 {
+        font-size: clamp(4.6rem, 12.5vw, 7.6rem);
+      }
+
+      .hero-stage {
+        width: min(560px, 100%);
+        margin-inline: auto;
+      }
+
+      .hero-orbit {
+        width: 540px;
+      }
+
+      .section-heading {
+        grid-template-columns: 1fr;
+        gap: 23px;
+      }
+
+      .section-intro {
+        max-width: 660px;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+
+      .feature-a,
+      .feature-b {
+        grid-column: span 3;
+      }
+
+      .feature-c,
+      .feature-d,
+      .feature-e {
+        grid-column: span 2;
+      }
+
+      .spec-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .blueprint-board {
+        max-width: 620px;
+      }
+
+      .palette-grid,
+      .preorder-card {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-copy {
+        max-width: 780px;
+      }
+
+      .palette-stage {
+        min-height: 570px;
+      }
+
+      .preorder-copy {
+        max-width: 780px;
+      }
+
+      .order-form {
+        width: min(100%, 650px);
+      }
+
+      .faq-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-aside {
+        position: static;
+      }
+
+      .footer-main {
+        grid-template-columns: 1.2fr .8fr;
+      }
+
+      .footer-brand {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page-width {
+        width: min(100% - 32px, 1320px);
+      }
+
+      .announcement-inner {
+        justify-content: flex-start;
+        overflow: hidden;
+        padding-inline: 16px;
+      }
+
+      .announcement-inner span:last-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .nav-shell {
+        min-height: 70px;
+      }
+
+      .nav-cta {
+        display: none !important;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 2px);
+        right: 0;
+        left: 0;
+        display: none;
+        align-items: stretch;
+        padding: 18px;
+        border: 2px solid var(--ink);
+        background: var(--cream);
+        box-shadow: 5px 5px 0 var(--ink);
+      }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .nav-links > a:not(.nav-cta) {
+        display: block;
+        padding: 15px 6px;
+        border-bottom: 1px solid rgba(23, 33, 58, .25);
+        font-size: 12px;
+      }
+
+      .nav-links > a:not(.nav-cta)::after {
+        display: none;
+      }
+
+      .nav-links .nav-cta {
+        display: inline-flex;
+        align-self: flex-start;
+        margin-top: 14px;
+      }
+
+      .hero {
+        padding-top: 55px;
+      }
+
+      .hero::before {
+        top: 2%;
+        left: -120px;
+      }
+
+      .hero-grid {
+        gap: 60px;
+      }
+
+      .hero h1 {
+        margin-top: 23px;
+        font-size: clamp(3.65rem, 17.2vw, 6rem);
+      }
+
+      .hero h1 span {
+        text-shadow: 4px 4px 0 var(--ink);
+      }
+
+      .hero-copy {
+        font-size: 16px;
+      }
+
+      .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-stats {
+        margin-top: 31px;
+      }
+
+      .hero-stat {
+        padding-right: 8px;
+      }
+
+      .hero-stat + .hero-stat {
+        padding-left: 11px;
+      }
+
+      .hero-stat strong {
+        font-size: 20px;
+      }
+
+      .hero-stat span {
+        font-size: 8px;
+      }
+
+      .hero-stage {
+        width: calc(100% - 8px);
+      }
+
+      .hero-orbit {
+        width: 112%;
+      }
+
+      .orbit-scribble {
+        top: 0;
+        right: -4px;
+        width: 93px;
+      }
+
+      .stage-callout {
+        bottom: 5%;
+        left: -2px;
+        max-width: 123px;
+        padding: 9px;
+        font-size: 7px;
+      }
+
+      .stage-callout::after {
+        display: none;
+      }
+
+      .device-sticker {
+        right: -7px;
+        width: 70px;
+        height: 70px;
+        font-size: 6px;
+      }
+
+      .device-sticker strong {
+        font-size: 20px;
+      }
+
+      .ticker-item {
+        padding-block: 14px;
+        font-size: 12px;
+      }
+
+      .section {
+        padding: 84px 0;
+      }
+
+      .section-title {
+        font-size: clamp(2.8rem, 13vw, 4.5rem);
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-a,
+      .feature-b,
+      .feature-c,
+      .feature-d,
+      .feature-e {
+        min-height: 350px;
+        grid-column: 1;
+      }
+
+      .feature-a {
+        min-height: 430px;
+      }
+
+      .feature-a .display-demo {
+        width: 72%;
+      }
+
+      .feature-card h3 {
+        font-size: 2.25rem;
+      }
+
+      .blueprint-board {
+        padding: 10px;
+      }
+
+      .spec-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .game-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .game-copy {
+        padding: 23px 21px 25px;
+      }
+
+      .more-games {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .palette-stage {
+        min-height: 500px;
+      }
+
+      .palette-device-wrap {
+        top: 56px;
+        transform: translateX(-50%) rotate(-4deg) scale(.88);
+      }
+
+      .palette-choice {
+        grid-template-columns: 63px minmax(0, 1fr) 29px;
+        gap: 11px;
+      }
+
+      .palette-swatch {
+        width: 61px;
+      }
+
+      .preorder-card {
+        padding: 25px 20px 30px;
+        border-radius: 22px;
+        box-shadow: 7px 7px 0 var(--ink);
+      }
+
+      .preorder-card::before {
+        top: 20px;
+        right: 19px;
+        width: 55px;
+        height: 18px;
+      }
+
+      .preorder-copy .section-title {
+        font-size: clamp(2.7rem, 12.5vw, 4.4rem);
+      }
+
+      .price {
+        font-size: 5.7rem;
+      }
+
+      .preorder-perks {
+        grid-template-columns: 1fr;
+      }
+
+      .countdown-panel {
+        padding: 17px 12px;
+      }
+
+      .countdown {
+        gap: 5px;
+      }
+
+      .countdown-unit strong {
+        min-height: 49px;
+        font-size: 1.65rem;
+      }
+
+      .order-form {
+        padding: 24px 18px;
+        box-shadow: 5px 5px 0 var(--ink);
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .faq-list summary {
+        grid-template-columns: minmax(0, 1fr) 36px;
+        gap: 14px;
+      }
+
+      .faq-answer {
+        padding-right: 12px;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 35px 22px;
+        padding-top: 58px;
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .brand {
+        font-size: 17px;
+      }
+
+      .brand-mark {
+        width: 28px;
+        height: 28px;
+      }
+
+      .hero-kicker {
+        font-size: 9px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3.35rem, 16.6vw, 4.65rem);
+      }
+
+      .hero-stat strong {
+        font-size: 18px;
+      }
+
+      .hero-stat span {
+        font-size: 7px;
+      }
+
+      .hero-device {
+        width: 100%;
+        box-shadow: 8px 10px 0 var(--ink);
+      }
+
+      .device-top {
+        padding: 22px 16px 25px;
+      }
+
+      .device-bottom {
+        padding: 22px 16px 27px;
+      }
+
+      .screen-bezel {
+        padding: 12px 12px 9px;
+      }
+
+      .controls-row {
+        padding-inline: 0;
+      }
+
+      .dpad,
+      .face-buttons {
+        width: 82px;
+      }
+
+      .control-center {
+        gap: 8px;
+      }
+
+      .speaker-dots {
+        width: 48px;
+      }
+
+      .device-hinge {
+        height: 24px;
+      }
+
+      .device-sticker {
+        bottom: 12px;
+      }
+
+      .feature-a .display-demo {
+        right: -28px;
+        width: 79%;
+      }
+
+      .weight-visual {
+        right: 14px;
+      }
+
+      .weight-number {
+        width: 103px;
+        height: 103px;
+      }
+
+      .weight-number strong {
+        font-size: 41px;
+      }
+
+      .mini-controller {
+        width: 105px;
+      }
+
+      .palette-name strong {
+        font-size: 15px;
+      }
+
+      .palette-name span {
+        font-size: 7px;
+      }
+
+      .palette-stage {
+        min-height: 475px;
+      }
+
+      .palette-device-wrap {
+        top: 50px;
+        transform: translateX(-50%) rotate(-4deg) scale(.78);
+      }
+
+      .price-line {
+        align-items: center;
+      }
+
+      .price {
+        font-size: 5rem;
+      }
+
+      .countdown-unit strong {
+        min-height: 45px;
+        font-size: 1.42rem;
+      }
+
+      .countdown-unit span {
+        font-size: 6px;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-brand {
+        grid-column: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+
+      .hero-device {
+        transform: rotate(2deg);
+      }
+
+      .ticker-track {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to the main stuff</a>
+
+  <div class="announcement" aria-label="Launch announcement">
+    <div class="announcement-inner page-width">
+      <span class="announcement-dot" aria-hidden="true"></span>
+      <span>First batch: 2,000 units · 48 games included · No subscription, no cloud tax</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <nav class="nav-shell page-width" aria-label="Main navigation">
+      <a class="brand" href="#hardware" aria-label="RIOT 01 home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span>RIOT//01</span>
+      </a>
+
+      <div class="nav-links" id="site-menu">
+        <a href="#hardware">Hardware</a>
+        <a href="#games">Games</a>
+        <a href="#specs">Specs</a>
+        <a href="#colorways">Colors</a>
+        <a href="#faq">FAQ</a>
+        <a class="nav-cta" href="#preorder">Pre-order / $79</a>
+      </div>
+
+      <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-menu">
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="hardware">
+      <div class="hero-grid page-width">
+        <div class="hero-copy-block reveal is-visible">
+          <div class="eyebrow hero-kicker">New hardware / RIOT//01</div>
+          <h1>Small box.<br><span>Big riot.</span></h1>
+          <p class="hero-copy">
+            Meet <strong>RIOT//01</strong>, the 94-gram pocket arcade with a vivid 2.8-inch screen, proper buttons, 48 built-in games, and just enough battery to ruin your bedtime.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#preorder">
+              Pre-order — $79
+              <span class="button-arrow" aria-hidden="true">→</span>
+            </a>
+            <button class="button button-light" id="tryDemo" type="button">
+              Try the live game
+              <span aria-hidden="true">▶</span>
+            </button>
+          </div>
+
+          <div class="hero-stats" aria-label="Product highlights">
+            <div class="hero-stat">
+              <strong>2.8 IN</strong>
+              <span>320 × 240 IPS</span>
+            </div>
+            <div class="hero-stat">
+              <strong>94 G</strong>
+              <span>Pocket weight</span>
+            </div>
+            <div class="hero-stat">
+              <strong>48 GAMES</strong>
+              <span>Zero loading</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-stage reveal is-visible" style="--reveal-delay: 120ms">
+          <div class="hero-orbit" aria-hidden="true"></div>
+          <div class="orbit-scribble" aria-hidden="true"><b>94g</b>barely legal<br>in most elevators</div>
+
+          <div class="hero-device product-shell palette-sherbet" id="heroDevice">
+            <div class="device-top">
+              <span class="device-hardware-label">RIOT OPTICALS / SERIAL R01–0001</span>
+              <span class="device-screw one" aria-hidden="true"></span>
+              <span class="device-screw two" aria-hidden="true"></span>
+
+              <div class="screen-bezel">
+                <div class="game-screen" id="gameScreen" tabindex="0" role="group" aria-label="Interactive RIOT game demo. Use the arrow keys to move, A to jump, B to attack, or use the hardware buttons.">
+                  <svg class="screen-game" viewBox="0 0 320 180" shape-rendering="crispEdges" aria-hidden="true">
+                    <rect width="320" height="180" fill="#111735"/>
+                    <rect y="0" width="320" height="21" fill="#0b1026"/>
+                    <rect x="8" y="7" width="4" height="7" fill="#d9ff55"/>
+                    <rect x="15" y="7" width="4" height="7" fill="#d9ff55"/>
+                    <rect x="22" y="7" width="4" height="7" fill="#4255e7"/>
+                    <text x="36" y="14" fill="#fffaf0" font-family="monospace" font-size="8" font-weight="bold">SCORE</text>
+                    <text x="254" y="14" fill="#fffaf0" font-family="monospace" font-size="8" font-weight="bold" id="screenScoreText">001200</text>
+
+                    <rect x="0" y="21" width="320" height="124" fill="#1a2856"/>
+                    <rect x="0" y="21" width="320" height="6" fill="#4255e7"/>
+                    <circle cx="267" cy="48" r="15" fill="#d9ff55"/>
+                    <circle cx="273" cy="43" r="15" fill="#1a2856"/>
+
+                    <rect x="0" y="81" width="36" height="40" fill="#101938"/>
+                    <rect x="7" y="70" width="9" height="45" fill="#101938"/>
+                    <rect x="23" y="61" width="8" height="53" fill="#101938"/>
+                    <rect x="47" y="91" width="27" height="36" fill="#141f46"/>
+                    <rect x="54" y="83" width="5" height="7" fill="#ff695d"/>
+                    <rect x="63" y="83" width="5" height="7" fill="#ffb1c5"/>
+                    <rect x="281" y="72" width="39" height="66" fill="#141f46"/>
+                    <rect x="289" y="80" width="6" height="8" fill="#ff695d"/>
+                    <rect x="303" y="80" width="6" height="8" fill="#d9ff55"/>
+                    <rect x="289" y="94" width="6" height="8" fill="#d9ff55"/>
+                    <rect x="303" y="94" width="6" height="8" fill="#ff695d"/>
+
+                    <rect x="0" y="130" width="320" height="9" fill="#ff695d"/>
+                    <rect x="0" y="139" width="320" height="7" fill="#0a1024"/>
+                    <rect x="13" y="146" width="32" height="5" fill="#4255e7"/>
+                    <rect x="58" y="146" width="16" height="5" fill="#4255e7"/>
+                    <rect x="88" y="146" width="48" height="5" fill="#4255e7"/>
+                    <rect x="151" y="146" width="26" height="5" fill="#4255e7"/>
+                    <rect x="192" y="146" width="53" height="5" fill="#4255e7"/>
+                    <rect x="260" y="146" width="40" height="5" fill="#4255e7"/>
+                    <rect x="9" y="165" width="7" height="7" fill="#4255e7"/>
+                    <rect x="304" y="165" width="7" height="7" fill="#4255e7"/>
+
+                    <g id="gameHero" transform="translate(72 130)">
+                      <rect x="-2" y="-5" width="4" height="5" fill="#0a1024"/>
+                      <rect x="-12" y="-23" width="24" height="19" fill="#ff695d"/>
+                      <rect x="-9" y="-30" width="18" height="10" fill="#ffb1c5"/>
+                      <rect x="-9" y="-22" width="18" height="5" fill="#111735"/>
+                      <rect x="-5" y="-19" width="3" height="3" fill="#d9ff55"/>
+                      <rect x="3" y="-19" width="3" height="3" fill="#d9ff55"/>
+                      <rect x="-14" y="-16" width="5" height="12" fill="#ff695d"/>
+                      <rect x="10" y="-16" width="5" height="12" fill="#ff695d"/>
+                      <rect x="-9" y="-4" width="7" height="5" fill="#4255e7"/>
+                      <rect x="3" y="-4" width="7" height="5" fill="#4255e7"/>
+                    </g>
+
+                    <g id="gameEnemy" transform="translate(213 130)">
+                      <rect x="-13" y="-20" width="26" height="15" fill="#c7b8ff"/>
+                      <rect x="-8" y="-29" width="16" height="10" fill="#c7b8ff"/>
+                      <rect x="-7" y="-25" width="4" height="3" fill="#ff695d"/>
+                      <rect x="4" y="-25" width="4" height="3" fill="#ff695d"/>
+                      <rect x="-4" y="-15" width="9" height="4" fill="#17213a"/>
+                      <rect x="-15" y="-12" width="6" height="8" fill="#7d69da"/>
+                      <rect x="10" y="-12" width="6" height="8" fill="#7d69da"/>
+                      <rect x="-9" y="-5" width="7" height="5" fill="#d9ff55"/>
+                      <rect x="3" y="-5" width="7" height="5" fill="#d9ff55"/>
+                    </g>
+
+                    <g id="gameCoin" transform="translate(252 78)">
+                      <rect x="-6" y="-9" width="12" height="18" fill="#ffb52e"/>
+                      <rect x="-4" y="-11" width="8" height="22" fill="#d9ff55"/>
+                      <rect x="-2" y="-7" width="4" height="14" fill="#fffaf0"/>
+                    </g>
+
+                    <rect x="0" y="21" width="320" height="124" fill="none" stroke="#091027" stroke-width="3"/>
+                  </svg>
+
+                  <span class="screen-live" aria-hidden="true">LIVE</span>
+                  <div class="screen-glass" aria-hidden="true"></div>
+                  <div class="screen-overlay" id="screenOverlay" hidden>
+                    <strong>Paused</strong>
+                    <span>Press start to continue</span>
+                  </div>
+                </div>
+
+                <div class="screen-meta" aria-hidden="true">
+                  <span>RIOT optics · 320 × 240 IPS</span>
+                  <span class="power-label"><i class="power-dot"></i>Power on</span>
+                </div>
+                <span class="screen-reader-only" id="gameStatus" aria-live="polite">Score 1200. Use the arrow keys or the device controls.</span>
+              </div>
+            </div>
+
+            <div class="device-hinge" aria-hidden="true"></div>
+
+            <div class="device-bottom">
+              <span class="device-hardware-label" style="top:auto;bottom:8px;">RIOT INPUTS / HAPTIC EDITION</span>
+
+              <div class="controls-row">
+                <div class="dpad" aria-label="Directional controls">
+                  <button class="control-key dpad-key dpad-up" type="button" data-control="up" aria-label="Move up or jump"></button>
+                  <button class="control-key dpad-key dpad-right" type="button" data-control="right" aria-label="Move right"></button>
+                  <button class="control-key dpad-key dpad-down" type="button" data-control="down" aria-label="Duck"></button>
+                  <button class="control-key dpad-key dpad-left" type="button" data-control="left" aria-label="Move left"></button>
+                  <span class="dpad-center" aria-hidden="true"></span>
+                </div>
+
+                <div class="control-center">
+                  <span class="speaker-dots" aria-hidden="true"></span>
+                  <div class="start-select" aria-label="System controls">
+                    <button class="control-key" type="button" data-control="select" aria-label="Select">SELECT</button>
+                    <button class="control-key" type="button" data-control="start" aria-label="Start or pause">START</button>
+                  </div>
+                  <span class="device-molded-label">Tactile / loud / proud</span>
+                </div>
+
+                <div class="face-buttons" aria-label="Action controls">
+                  <button class="control-key face-key face-y" type="button" data-control="y" aria-label="Y button">Y</button>
+                  <button class="control-key face-key face-x" type="button" data-control="x" aria-label="X button">X</button>
+                  <button class="control-key face-key face-a" type="button" data-control="a" aria-label="A button, jump">A</button>
+                  <button class="control-key face-key face-b" type="button" data-control="b" aria-label="B button, attack">B</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="device-sticker" aria-hidden="true"><span><strong>48</strong>games<br>inside</span></div>
+          </div>
+
+          <div class="stage-callout" id="demoHint">Controls are live.<br>Arrow keys or buttons.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <div class="ticker-set">
+          <span class="ticker-item">48 games inside</span>
+          <span class="ticker-item">14-hour battery</span>
+          <span class="ticker-item">320 × 240 glow</span>
+          <span class="ticker-item">94 grams of trouble</span>
+          <span class="ticker-item">Four-player couch co-op</span>
+          <span class="ticker-item">No subscription</span>
+        </div>
+        <div class="ticker-set">
+          <span class="ticker-item">48 games inside</span>
+          <span class="ticker-item">14-hour battery</span>
+          <span class="ticker-item">320 × 240 glow</span>
+          <span class="ticker-item">94 grams of trouble</span>
+          <span class="ticker-item">Four-player couch co-op</span>
+          <span class="ticker-item">No subscription</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="section" id="features">
+      <div class="page-width">
+        <div class="section-heading reveal">
+          <div>
+            <div class="eyebrow section-kicker">01 / The good stuff</div>
+            <h2 class="section-title">Tiny in hand.<br>Serious under the hood.</h2>
+          </div>
+          <p class="section-intro">Every part has one job: get the device out of your pocket and keep it there until somebody says dinner is ready.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card feature-a reveal">
+            <div class="feature-top">
+              <span class="card-index">Display / 01</span>
+              <h3>Every pixel gets a job.</h3>
+              <p>A bright 2.8-inch IPS panel, crisp 320 × 240 resolution, anti-glare glass, and a backlight that refuses dramatic dimming.</p>
+            </div>
+
+            <div class="display-demo" aria-hidden="true">
+              <div class="display-demo-bar"><span><i></i> &nbsp; SKIP//ONE</span><span>WORLD 03</span></div>
+              <svg viewBox="0 0 520 260" shape-rendering="crispEdges">
+                <rect width="520" height="260" fill="#111735"/>
+                <circle cx="420" cy="57" r="34" fill="#d9ff55"/>
+                <circle cx="433" cy="46" r="34" fill="#111735"/>
+                <rect y="190" width="520" height="70" fill="#0b1025"/>
+                <rect x="0" y="165" width="100" height="32" fill="#1e2d5d"/>
+                <rect x="115" y="135" width="72" height="62" fill="#1a2751"/>
+                <rect x="201" y="101" width="83" height="96" fill="#222f60"/>
+                <rect x="300" y="151" width="95" height="46" fill="#18254c"/>
+                <rect x="410" y="117" width="110" height="80" fill="#1d2a56"/>
+                <g fill="#ff695d">
+                  <rect x="132" y="149" width="9" height="13"/><rect x="151" y="149" width="9" height="13"/>
+                  <rect x="220" y="119" width="10" height="15"/><rect x="241" y="119" width="10" height="15"/>
+                  <rect x="428" y="137" width="11" height="16"/><rect x="451" y="137" width="11" height="16"/>
+                </g>
+                <rect x="0" y="195" width="135" height="12" fill="#4255e7"/>
+                <rect x="158" y="195" width="88" height="12" fill="#ff695d"/>
+                <rect x="275" y="195" width="93" height="12" fill="#4255e7"/>
+                <rect x="395" y="195" width="125" height="12" fill="#d9ff55"/>
+                <rect x="0" y="226" width="85" height="12" fill="#4255e7"/>
+                <rect x="112" y="226" width="142" height="12" fill="#4255e7"/>
+                <rect x="286" y="226" width="96" height="12" fill="#4255e7"/>
+                <rect x="414" y="226" width="106" height="12" fill="#4255e7"/>
+                <g transform="translate(238 186)">
+                  <rect x="-28" y="-48" width="56" height="42" fill="#ff695d"/>
+                  <rect x="-20" y="-66" width="40" height="23" fill="#ffb1c5"/>
+                  <rect x="-20" y="-47" width="40" height="10" fill="#111735"/>
+                  <rect x="-12" y="-43" width="7" height="6" fill="#d9ff55"/>
+                  <rect x="7" y="-43" width="7" height="6" fill="#d9ff55"/>
+                  <rect x="-37" y="-31" width="12" height="25" fill="#ff695d"/>
+                  <rect x="27" y="-31" width="12" height="25" fill="#ff695d"/>
+                  <rect x="-20" y="-7" width="16" height="9" fill="#4255e7"/>
+                  <rect x="6" y="-7" width="16" height="9" fill="#4255e7"/>
+                  <rect x="22" y="-22" width="55" height="9" fill="#d9ff55"/>
+                  <rect x="65" y="-22" width="11" height="19" fill="#d9ff55"/>
+                </g>
+                <rect x="0" y="0" width="520" height="15" fill="#0a1025"/>
+                <text x="12" y="11" fill="#fffaf0" font-family="monospace" font-size="8" font-weight="bold">SKIP//ONE</text>
+                <text x="460" y="11" fill="#d9ff55" font-family="monospace" font-size="8" font-weight="bold">03–02</text>
+              </svg>
+            </div>
+          </article>
+
+          <article class="feature-card feature-b reveal" style="--reveal-delay: 80ms">
+            <div class="feature-top">
+              <span class="card-index">Weight / 02</span>
+              <h3>Featherweight. Not fragile.</h3>
+              <p>A reinforced inner frame and ribbed corners survive back-pocket life, accidental drops, and mostArguments about whose turn it is.</p>
+            </div>
+            <div class="weight-visual" aria-hidden="true">
+              <div class="weight-number"><strong>94</strong><span>grams</span></div>
+              <div class="mini-weight-device"></div>
+            </div>
+          </article>
+
+          <article class="feature-card feature-c reveal">
+            <div class="feature-top">
+              <span class="card-index">Battery / 03</span>
+              <h3>14 hours of mischief.</h3>
+              <p>A 1,200mAh battery, efficient display, and a real USB-C port. The charger lives in a drawer. The fun does not.</p>
+            </div>
+            <div class="battery-visual" aria-hidden="true">
+              <div class="battery-shell"><div class="battery-fill"><span>14 HRS</span><small>LOW POWER PANIC: OFF</small></div></div>
+            </div>
+          </article>
+
+          <article class="feature-card feature-d reveal" style="--reveal-delay: 70ms">
+            <div class="feature-top">
+              <span class="card-index">Multiplayer / 04</span>
+              <h3>Bring your worst friends.</h3>
+              <p>Four-player couch co-op over a quick local link. No accounts, no cloud, no one asking Alex to share a screen.</p>
+            </div>
+            <div class="multiplayer-visual" aria-hidden="true">
+              <div class="mini-controller"><span class="controller-buttons"><i></i><i></i></span></div>
+              <div class="mini-controller"><span class="controller-buttons"><i></i><i></i></span></div>
+            </div>
+          </article>
+
+          <article class="feature-card feature-e reveal" style="--reveal-delay: 140ms">
+            <div class="feature-top">
+              <span class="card-index">Storage / 05</span>
+              <h3>Your saves stay yours.</h3>
+              <p>A 64GB microSD card keeps saves, photos, and homebrew games local. 48 official games are already installed.</p>
+            </div>
+            <div class="sd-card" aria-hidden="true"><strong>64GB</strong><span>Local saves / RIOT mode ready</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section specs-section" id="specs">
+      <div class="page-width">
+        <div class="spec-layout">
+          <div class="blueprint-board product-shell palette-sherbet reveal" aria-label="RIOT 01 technical drawing">
+            <span class="blueprint-stamp">Engineering<br>approved / 01</span>
+            <svg class="blueprint-svg" viewBox="0 0 520 450" role="img" aria-labelledby="blueprintTitle">
+              <title id="blueprintTitle">Technical drawing of the closed RIOT 01 handheld</title>
+              <defs>
+                <pattern id="tinyGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(246,240,223,.08)" stroke-width="1"/>
+                </pattern>
+              </defs>
+              <rect width="520" height="450" fill="url(#tinyGrid)"/>
+              <rect x="145" y="35" width="230" height="360" rx="38" fill="var(--device-main)" stroke="#f6f0df" stroke-width="3"/>
+              <path d="M145 183h230" stroke="#17213a" stroke-width="3"/>
+              <rect x="174" y="79" width="172" height="116" rx="15" fill="#111731" stroke="#f6f0df" stroke-width="2"/>
+              <rect x="188" y="93" width="144" height="84" fill="#202b59" stroke="#4255e7" stroke-width="3"/>
+              <circle cx="260" cy="55" r="3" fill="#17213a"/>
+              <path d="M179 250h35v35h-35zm0 47h35v35h-35zm-22-24h22v22h-22zm47 0h22v22h22v-22" fill="none" stroke="#17213a" stroke-width="8"/>
+              <circle cx="329" cy="254" r="13" fill="none" stroke="#17213a" stroke-width="6"/>
+              <circle cx="366" cy="278" r="13" fill="none" stroke="#17213a" stroke-width="6"/>
+              <circle cx="348" cy="314" r="13" fill="none" stroke="#17213a" stroke-width="6"/>
+              <circle cx="311" cy="290" r="13" fill="var(--device-highlight)" stroke="#17213a" stroke-width="6"/>
+              <circle cx="260" cy="337" r="8" fill="#17213a"/>
+              <circle cx="278" cy="337" r="8" fill="#17213a"/>
+              <g stroke="#d9ff55" stroke-width="1.5" fill="none">
+                <path d="M145 55H103M145 390H103M103 55v335"/>
+                <path d="M97 55l6-5 6 5M97 390l6 5 6-5"/>
+                <path d="M375 35v-19M375 395v20M375 16h-118M375 415h-118"/>
+                <path d="M257 16l5-6 5 6M257 415l5 6 5-6"/>
+              </g>
+              <text x="91" y="225" fill="#d9ff55" font-family="monospace" font-size="11" transform="rotate(-90 91 225)">82 mm</text>
+              <text x="273" y="11" fill="#d9ff55" font-family="monospace" font-size="11">128 mm</text>
+              <text x="391" y="223" fill="#f6f0df" font-family="monospace" font-size="10" transform="rotate(90 391 223)">18.5 mm closed</text>
+              <text x="176" y="421" fill="#f6f0df" font-family="monospace" font-size="10">FRONT ELEVATION / SCALE 1:2.4</text>
+              <text x="23" y="35" fill="#f6f0df" font-family="monospace" font-size="10">R01-A</text>
+              <text x="423" y="35" fill="#f6f0df" font-family="monospace" font-size="10">REV 04</text>
+            </svg>
+          </div>
+
+          <div class="spec-copy reveal" style="--reveal-delay: 90ms">
+            <div class="eyebrow section-kicker">02 / The numbers</div>
+            <h2 class="section-title">Small shell.<br>Serious internals.</h2>
+
+            <dl class="spec-list">
+              <div class="spec-row">
+                <dt>Display</dt>
+                <dd>2.8-inch IPS <span>320 × 240 / 240p / anti-glare glass</span></dd>
+              </div>
+              <div class="spec-row">
+                <dt>Processor</dt>
+                <dd>R1 custom 64-bit chip <span>1.2GHz / dedicated pixel engine / low-power mode</span></dd>
+              </div>
+              <div class="spec-row">
+                <dt>Memory</dt>
+                <dd>1GB LPDDR4 <span>Plus 512MB dedicated game RAM</span></dd>
+              </div>
+              <div class="spec-row">
+                <dt>Storage</dt>
+                <dd>64GB microSD <span>48 official games preloaded</span></dd>
+              </div>
+              <div class="spec-row">
+                <dt>Battery</dt>
+                <dd>1,200mAh rechargeable <span>Up to 14 hours / USB-C charging</span></dd>
+              </div>
+              <div class="spec-row">
+                <dt>Connections</dt>
+                <dd>Wi-Fi 5 / local link <span>Bluetooth audio / 3.5mm headphone jack</span></dd>
+              </div>
+              <div class="spec-row">
+                <dt>Body</dt>
+                <dd>82 × 128 × 18.5mm <span>94 grams / reinforced PC-ABS shell</span></dd>
+              </div>
+            </dl>
+
+            <div class="box-note" aria-label="Box contents">
+              <span>RIOT//01</span>
+              <span>Braided USB-C cable</span>
+              <span>Wrist loop</span>
+              <span>Quick-start card</span>
+              <span>48 games</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section games-section" id="games">
+      <div class="page-width">
+        <div class="section-heading reveal">
+          <div>
+            <div class="eyebrow section-kicker">03 / The good part</div>
+            <h2 class="section-title">48 worlds.<br>Zero commitment.</h2>
+            <div class="games-intro-line">No storefront maze. No monthly subscription. Just pick and play.</div>
+          </div>
+          <p class="section-intro">The first batch launches with a deliberately weird, aggressively polished mix of platformers, puzzles, racers, sports games, and couch chaos.</p>
+        </div>
+
+        <div class="game-grid">
+          <article class="game-card reveal">
+            <figure class="game-art">
+              <svg viewBox="0 0 640 390" shape-rendering="crispEdges" role="img" aria-labelledby="skipTitle">
+                <title id="skipTitle">Pixel art of a rooftop ninja in a neon city</title>
+                <rect width="640" height="390" fill="#111735"/>
+                <rect y="0" width="640" height="35" fill="#0a1026"/>
+                <text x="22" y="23" fill="#fffaf0" font-family="monospace" font-size="12" font-weight="bold">SKIP//ONE</text>
+                <text x="548" y="23" fill="#d9ff55" font-family="monospace" font-size="12" font-weight="bold">03–02</text>
+                <circle cx="508" cy="93" r="45" fill="#d9ff55"/>
+                <circle cx="527" cy="77" r="45" fill="#111735"/>
+                <path d="M0 192h79v-74h55v58h43V99h62v88h48v-45h79v50h44V128h72v57h57v-84h61v70h40v219H0z" fill="#192653"/>
+                <g fill="#26366b">
+                  <rect x="90" y="139" width="12" height="20"/><rect x="110" y="139" width="12" height="20"/>
+                  <rect x="188" y="119" width="15" height="24"/><rect x="214" y="119" width="15" height="24"/>
+                  <rect x="332" y="163" width="13" height="22"/><rect x="354" y="163" width="13" height="22"/>
+                  <rect x="488" y="150" width="13" height="23"/><rect x="510" y="150" width="13" height="23"/>
+                </g>
+                <g fill="#ff695d">
+                  <rect x="95" y="165" width="8" height="15"/><rect x="122" y="165" width="8" height="15"/>
+                  <rect x="199" y="153" width="9" height="16"/><rect x="232" y="153" width="9" height="16"/>
+                  <rect x="347" y="190" width="9" height="16"/><rect x="374" y="190" width="9" height="16"/>
+                </g>
+                <rect y="318" width="640" height="72" fill="#090e20"/>
+                <rect x="0" y="290" width="166" height="18" fill="#4255e7"/>
+                <rect x="203" y="290" width="116" height="18" fill="#ff695d"/>
+                <rect x="355" y="290" width="132" height="18" fill="#d9ff55"/>
+                <rect x="525" y="290" width="115" height="18" fill="#4255e7"/>
+                <rect x="40" y="353" width="101" height="16" fill="#4255e7"/>
+                <rect x="177" y="353" width="153" height="16" fill="#4255e7"/>
+                <rect x="368" y="353" width="91" height="16" fill="#4255e7"/>
+                <rect x="498" y="353" width="103" height="16" fill="#4255e7"/>
+                <g transform="translate(330 280)">
+                  <rect x="-38" y="-75" width="76" height="61" fill="#ff695d"/>
+                  <rect x="-28" y="-95" width="55" height="31" fill="#ffb1c5"/>
+                  <rect x="-28" y="-69" width="55" height="13" fill="#111735"/>
+                  <rect x="-16" y="-63" width="8" height="6" fill="#d9ff55"/>
+                  <rect x="9" y="-63" width="8" height="6" fill="#d9ff55"/>
+                  <rect x="-50" y="-50" width="15" height="34" fill="#ff695d"/>
+                  <rect x="37" y="-50" width="15" height="34" fill="#ff695d"/>
+                  <rect x="-28" y="-14" width="22" height="14" fill="#4255e7"/>
+                  <rect x="7" y="-14" width="22" height="14" fill="#4255e7"/>
+                  <rect x="31" y="-45" width="77" height="11" fill="#d9ff55"/>
+                  <rect x="95" y="-45" width="16" height="30" fill="#d9ff55"/>
+                </g>
+                <g transform="translate(105 281)">
+                  <rect x="-19" y="-38" width="38" height="28" fill="#c7b8ff"/>
+                  <rect x="-12" y="-49" width="24" height="15" fill="#c7b8ff"/>
+                  <rect x="-9" y="-42" width="5" height="4" fill="#ff695d"/>
+                  <rect x="5" y="-42" width="5" height="4" fill="#ff695d"/>
+                  <rect x="-13" y="-10" width="10" height="10" fill="#d9ff55"/>
+                  <rect x="4" y="-10" width="10" height="10" fill="#d9ff55"/>
+                </g>
+              </svg>
+            </figure>
+            <div class="game-copy">
+              <div class="game-meta"><span class="game-genre">1–2 Players</span><span>12 levels / 2–4 hrs</span></div>
+              <h3>Skip//One</h3>
+              <p>A rooftop platformer where every rooftop has an opinion and your shin has no health bar.</p>
+            </div>
+          </article>
+
+          <article class="game-card reveal" style="--reveal-delay: 80ms">
+            <figure class="game-art">
+              <svg viewBox="0 0 640 390" shape-rendering="crispEdges" role="img" aria-labelledby="cloudTitle">
+                <title id="cloudTitle">Pixel art of a courier robot jumping through clouds</title>
+                <rect width="640" height="390" fill="#69c8ef"/>
+                <rect y="0" width="640" height="36" fill="#16264b"/>
+                <text x="20" y="24" fill="#fffaf0" font-family="monospace" font-size="12" font-weight="bold">CLOUD COURIER</text>
+                <text x="565" y="24" fill="#d9ff55" font-family="monospace" font-size="12" font-weight="bold">MAIL!</text>
+                <rect y="36" width="640" height="354" fill="#65c9f1"/>
+                <circle cx="535" cy="98" r="49" fill="#d9ff55"/>
+                <g fill="#fffdf7">
+                  <rect x="31" y="92" width="48" height="27"/><rect x="17" y="107" width="88" height="30"/><rect x="48" y="75" width="46" height="32"/>
+                  <rect x="395" y="162" width="52" height="28"/><rect x="380" y="177" width="92" height="28"/><rect x="417" y="143" width="47" height="31"/>
+                  <rect x="171" y="300" width="61" height="25"/><rect x="154" y="313" width="113" height="28"/><rect x="199" y="281" width="55" height="34"/>
+                </g>
+                <g fill="#b6e8fa">
+                  <rect x="18" y="125" width="86" height="10"/><rect x="382" y="193" width="89" height="10"/><rect x="157" y="329" width="108" height="10"/>
+                </g>
+                <rect x="0" y="224" width="129" height="19" fill="#ff695d"/>
+                <rect x="184" y="224" width="128" height="19" fill="#4255e7"/>
+                <rect x="368" y="224" width="130" height="19" fill="#ff695d"/>
+                <rect x="548" y="224" width="92" height="19" fill="#4255e7"/>
+                <rect x="44" y="371" width="144" height="19" fill="#4255e7"/>
+                <rect x="230" y="371" width="110" height="19" fill="#ff695d"/>
+                <rect x="386" y="371" width="173" height="19" fill="#4255e7"/>
+                <g transform="translate(255 213)">
+                  <rect x="-24" y="-50" width="48" height="37" fill="#ff695d"/>
+                  <rect x="-17" y="-64" width="34" height="19" fill="#fffaf0"/>
+                  <rect x="-15" y="-55" width="9" height="8" fill="#17213a"/>
+                  <rect x="6" y="-55" width="9" height="8" fill="#17213a"/>
+                  <rect x="-31" y="-38" width="10" height="24" fill="#ff695d"/>
+                  <rect x="21" y="-38" width="10" height="24" fill="#ff695d"/>
+                  <rect x="-18" y="-13" width="14" height="14" fill="#4255e7"/>
+                  <rect x="5" y="-13" width="14" height="14" fill="#4255e7"/>
+                  <rect x="26" y="-44" width="40" height="25" fill="#d9ff55"/>
+                  <rect x="34" y="-55" width="24" height="12" fill="#d9ff55"/>
+                  <path d="M-6-71h22v-18H2l8-11 8 11H7v18H-6z" fill="#d9ff55"/>
+                </g>
+                <g transform="translate(556 214)">
+                  <rect x="-16" y="-42" width="32" height="27" fill="#c7b8ff"/>
+                  <rect x="-10" y="-51" width="20" height="12" fill="#c7b8ff"/>
+                  <rect x="-8" y="-44" width="6" height="5" fill="#17213a"/>
+                  <rect x="3" y="-44" width="6" height="5" fill="#17213a"/>
+                  <rect x="-12" y="-15" width="10" height="15" fill="#4255e7"/>
+                  <rect x="3" y="-15" width="10" height="15" fill="#4255e7"/>
+                </g>
+              </svg>
+            </figure>
+            <div class="game-copy">
+              <div class="game-meta"><span class="game-genre">1–4 Players</span><span>30 deliveries / 1–3 hrs</span></div>
+              <h3>Cloud Courier</h3>
+              <p>Deliver one very fresh pastry to a cloud empire with impossible zoning laws.</p>
+            </div>
+          </article>
+
+          <article class="game-card reveal" style="--reveal-delay: 70ms">
+            <figure class="game-art">
+              <svg viewBox="0 0 640 390" shape-rendering="crispEdges" role="img" aria-labelledby="golfTitle">
+                <title id="golfTitle">Pixel art of a tiny golf course and a golf ball near the hole</title>
+                <rect width="640" height="390" fill="#d9ff55"/>
+                <rect x="18" y="18" width="604" height="354" fill="#8ee063" stroke="#17213a" stroke-width="4"/>
+                <g fill="#a6ec79">
+                  <rect x="35" y="35" width="62" height="12"/><rect x="35" y="65" width="39" height="12"/>
+                  <rect x="94" y="65" width="62" height="12"/><rect x="35" y="95" width="91" height="12"/>
+                  <rect x="160" y="35" width="48" height="12"/><rect x="160" y="65" width="73" height="12"/>
+                  <rect x="267" y="35" width="62" height="12"/><rect x="267" y="65" width="39" height="12"/>
+                  <rect x="326" y="65" width="91" height="12"/><rect x="453" y="35" width="48" height="12"/>
+                  <rect x="453" y="65" width="84" height="12"/><rect x="574" y="35" width="31" height="12"/>
+                  <rect x="35" y="260" width="73" height="12"/><rect x="145" y="260" width="48" height="12"/>
+                  <rect x="231" y="260" width="62" height="12"/><rect x="331" y="260" width="88" height="12"/>
+                  <rect x="457" y="260" width="56" height="12"/><rect x="550" y="260" width="55" height="12"/>
+                  <rect x="35" y="290" width="45" height="12"/><rect x="113" y="290" width="88" height="12"/>
+                  <rect x="239" y="290" width="47" height="12"/><rect x="325" y="290" width="71" height="12"/>
+                  <rect x="434" y="290" width="54" height="12"/><rect x="526" y="290" width="79" height="12"/>
+                  <rect x="35" y="320" width="87" height="12"/><rect x="160" y="320" width="46" height="12"/>
+                  <rect x="244" y="320" width="79" height="12"/><rect x="361" y="320" width="43" height="12"/>
+                  <rect x="442" y="320" width="71" height="12"/><rect x="550" y="320" width="55" height="12"/>
+                </g>
+                <path d="M48 146h116v28h87v31h91v-38h111v-30h106" fill="none" stroke="#f6f0df" stroke-width="34"/>
+                <path d="M48 146h116v28h87v31h91v-38h111v-30h106" fill="none" stroke="#4255e7" stroke-width="6" stroke-dasharray="10 13"/>
+                <rect x="53" y="139" width="15" height="15" fill="#ff695d"/>
+                <rect x="518" y="130" width="28" height="28" fill="#17213a"/>
+                <circle cx="532" cy="144" r="6" fill="#d9ff55"/>
+                <rect x="524" y="97" width="4" height="42" fill="#17213a"/>
+                <rect x="528" y="97" width="39" height="24" fill="#ff695d"/>
+                <g transform="translate(275 195)">
+                  <rect x="-12" y="-12" width="24" height="24" fill="#fffaf0" stroke="#17213a" stroke-width="3"/>
+                  <g fill="#9b9da8">
+                    <rect x="-4" y="-7" width="3" height="3"/><rect x="3" y="-4" width="3" height="3"/>
+                    <rect x="-6" y="2" width="3" height="3"/><rect x="2" y="6" width="3" height="3"/>
+                  </g>
+                </g>
+                <text x="35" y="354" fill="#17213a" font-family="monospace" font-size="12" font-weight="bold">HOLE 18 / PAR 3 / WIND: PERSONAL</text>
+              </svg>
+            </figure>
+            <div class="game-copy">
+              <div class="game-meta"><span class="game-genre">1–4 Players</span><span>18 holes / quick rounds</span></div>
+              <h3>Tiny Golf Club</h3>
+              <p>Eighteen holes, one wind machine, and unlimited retries for your putt.</p>
+            </div>
+          </article>
+
+          <article class="game-card reveal" style="--reveal-delay: 130ms">
+            <figure class="game-art">
+              <svg viewBox="0 0 640 390" shape-rendering="crispEdges" role="img" aria-labelledby="discoTitle">
+                <title id="discoTitle">Pixel art heroes dancing in a disco dungeon</title>
+                <rect width="640" height="390" fill="#3d286e"/>
+                <rect y="0" width="640" height="36" fill="#20153e"/>
+                <text x="20" y="24" fill="#fffaf0" font-family="monospace" font-size="12" font-weight="bold">DISCO DUNGEON</text>
+                <text x="554" y="24" fill="#ff93bd" font-family="monospace" font-size="12" font-weight="bold">BASS: ON</text>
+                <rect x="65" y="62" width="510" height="232" fill="#28174d" stroke="#ff695d" stroke-width="5"/>
+                <rect x="93" y="89" width="164" height="79" fill="#4b2c83" stroke="#7a53b6" stroke-width="4"/>
+                <rect x="383" y="89" width="164" height="79" fill="#4b2c83" stroke="#7a53b6" stroke-width="4"/>
+                <path d="M0 294h90v-41h70v41h80v-41h80v41h80v-41h80v41h80v-41h80v96H0z" fill="#d9ff55"/>
+                <path d="M0 294h90v96H0zm90 0h80v96H90zm80 0h80v96h-80zm80 0h80v96h-80zm80 0h80v96h-80zm80 0h80v96h-80zm80 0h80v96h-80z" fill="#20153e"/>
+                <rect x="319" y="0" width="3" height="70" fill="#fffaf0"/>
+                <circle cx="320" cy="80" r="32" fill="#c7b8ff" stroke="#fffaf0" stroke-width="4"/>
+                <g fill="#fffaf0">
+                  <rect x="302" y="58" width="12" height="12"/><rect x="326" y="66" width="12" height="12"/>
+                  <rect x="309" y="87" width="12" height="12"/><rect x="289" y="76" width="10" height="10"/>
+                  <rect x="341" y="77" width="10" height="10"/>
+                </g>
+                <g transform="translate(235 263)">
+                  <rect x="-31" y="-75" width="62" height="51" fill="#ff695d"/>
+                  <rect x="-20" y="-96" width="40" height="25" fill="#ffb1c5"/>
+                  <rect x="-21" y="-69" width="42" height="12" fill="#17213a"/>
+                  <rect x="-13" y="-64" width="8" height="5" fill="#d9ff55"/>
+                  <rect x="7" y="-64" width="8" height="5" fill="#d9ff55"/>
+                  <rect x="-46" y="-52" width="14" height="33" fill="#ff695d"/>
+                  <rect x="33" y="-52" width="14" height="33" fill="#ff695d"/>
+                  <rect x="-25" y="-24" width="19" height="15" fill="#4255e7"/>
+                  <rect x="7" y="-24" width="19" height="15" fill="#4255e7"/>
+                  <path d="M-38-44h-30v12h30M39-44h30v12H39" fill="none" stroke="#ff93bd" stroke-width="8"/>
+                </g>
+                <g transform="translate(404 263)">
+                  <rect x="-28" y="-67" width="56" height="45" fill="#c7b8ff"/>
+                  <rect x="-18" y="-85" width="36" height="22" fill="#7d69da"/>
+                  <rect x="-18" y="-62" width="36" height="10" fill="#17213a"/>
+                  <rect x="-11" y="-57" width="7" height="5" fill="#ff695d"/>
+                  <rect x="6" y="-57" width="7" height="5" fill="#ff695d"/>
+                  <rect x="-39" y="-46" width="12" height="28" fill="#7d69da"/>
+                  <rect x="28" y="-46" width="12" height="28" fill="#7d69da"/>
+                  <rect x="-22" y="-22" width="17" height="14" fill="#d9ff55"/>
+                  <rect x="6" y="-22" width="17" height="14" fill="#d9ff55"/>
+                </g>
+                <rect x="111" y="246" width="56" height="42" fill="#4255e7" stroke="#17213a" stroke-width="3"/>
+                <rect x="118" y="230" width="42" height="18" fill="#d9ff55" stroke="#17213a" stroke-width="3"/>
+                <rect x="128" y="250" width="23" height="22" fill="#fffaf0"/>
+                <rect x="137" y="258" width="6" height="8" fill="#17213a"/>
+              </svg>
+            </figure>
+            <div class="game-copy">
+              <div class="game-meta"><span class="game-genre">1–2 Players</span><span>8 floors / rhythm battles</span></div>
+              <h3>Disco Dungeon</h3>
+              <p>Boogie through a haunted crypt. Bosses hit back. Nobody has recorded a dubbing.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="more-games reveal">
+          <span>+44 more</span>
+          <span>Puzzles · Racing · Sports · Arcade · Rhythm · Pure nonsense</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section palette-section" id="colorways">
+      <div class="page-width palette-grid">
+        <div class="palette-copy reveal">
+          <div class="eyebrow section-kicker" style="color:#4a39b8;">04 / Choose your chaos</div>
+          <h2 class="section-title">Three ways to cause a scene.</h2>
+          <p>Pick your finish. Every RIOT//01 includes the full game library, the same bright display, and the same questionable decision-making.</p>
+
+          <div class="palette-options" aria-label="Device colorways">
+            <button class="palette-choice" type="button" data-palette="sherbet" aria-pressed="true">
+              <span class="palette-swatch" aria-hidden="true"><i style="background:#ff695d"></i><i style="background:#4255e7"></i><i style="background:#d9ff55"></i></span>
+              <span class="palette-name"><strong>01 / Sherbet</strong><span>Coral shell · Cobalt controls · Lime light</span></span>
+              <span class="palette-check" aria-hidden="true">✓</span>
+            </button>
+
+            <button class="palette-choice" type="button" data-palette="pickle" aria-pressed="false">
+              <span class="palette-swatch" aria-hidden="true"><i style="background:#d9ff55"></i><i style="background:#ff695d"></i><i style="background:#4255e7"></i></span>
+              <span class="palette-name"><strong>02 / Pickle</strong><span>Acid shell · Coral controls · Blue light</span></span>
+              <span class="palette-check" aria-hidden="true">✓</span>
+            </button>
+
+            <button class="palette-choice" type="button" data-palette="moonmilk" aria-pressed="false">
+              <span class="palette-swatch" aria-hidden="true"><i style="background:#bcaaff"></i><i style="background:#17213a"></i><i style="background:#d9ff55"></i></span>
+              <span class="palette-name"><strong>03 / Moonmilk</strong><span>Lavender shell · Black controls · Lime light</span></span>
+              <span class="palette-check" aria-hidden="true">✓</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="palette-stage reveal" style="--reveal-delay: 100ms">
+          <span class="palette-label">Factory finish / <span data-palette-name>Sherbet</span></span>
+
+          <div class="palette-device-wrap product-shell palette-sherbet" aria-label="Preview of the selected RIOT 01 colorway">
+            <div class="mini-device" aria-hidden="true">
+              <div class="mini-device-screen">
+                <svg viewBox="0 0 200 125" shape-rendering="crispEdges">
+                  <rect width="200" height="125" fill="#111735"/>
+                  <rect y="0" width="200" height="16" fill="#0b1026"/>
+                  <text x="8" y="11" fill="#fffaf0" font-family="monospace" font-size="6" font-weight="bold">SKIP//ONE</text>
+                  <circle cx="159" cy="37" r="12" fill="#d9ff55"/>
+                  <rect y="84" width="200" height="41" fill="#090f23"/>
+                  <rect x="0" y="76" width="45" height="8" fill="#4255e7"/>
+                  <rect x="64" y="76" width="54" height="8" fill="#ff695d"/>
+                  <rect x="138" y="76" width="62" height="8" fill="#4255e7"/>
+                  <g transform="translate(93 76)">
+                    <rect x="-13" y="-28" width="26" height="20" fill="#ff695d"/>
+                    <rect x="-9" y="-36" width="18" height="11" fill="#ffb1c5"/>
+                    <rect x="-9" y="-27" width="18" height="5" fill="#111735"/>
+                    <rect x="-6" y="-25" width="3" height="2" fill="#d9ff55"/>
+                    <rect x="3" y="-25" width="3" height="2" fill="#d9ff55"/>
+                    <rect x="-10" y="-8" width="7" height="8" fill="#4255e7"/>
+                    <rect x="3" y="-8" width="7" height="8" fill="#4255e7"/>
+                  </g>
+                  <g transform="translate(154 76)">
+                    <rect x="-10" y="-18" width="20" height="13" fill="#c7b8ff"/>
+                    <rect x="-6" y="-23" width="12" height="7" fill="#c7b8ff"/>
+                    <rect x="-4" y="-19" width="3" height="2" fill="#ff695d"/>
+                    <rect x="2" y="-19" width="3" height="2" fill="#ff695d"/>
+                  </g>
+                </svg>
+              </div>
+              <div class="mini-device-controls">
+                <span class="mini-dpad"></span>
+                <span class="mini-face"><i></i><i></i><i></i><i></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="palette-caption"><strong data-palette-name>Sherbet</strong> / <span data-palette-description>Coral shell, cobalt controls, lime status light</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section preorder-section" id="preorder">
+      <div class="page-width">
+        <div class="preorder-card reveal">
+          <div class="preorder-copy">
+            <span class="batch-badge">First batch / 2,000 units</span>
+            <h2 class="section-title">Make room in your pocket.</h2>
+
+            <div class="price-line">
+              <span class="price">$79</span>
+              <span class="price-note">One device. 48 games.<br>Zero monthly nonsense.</span>
+            </div>
+
+            <ul class="preorder-perks">
+              <li>Ships free in launch regions</li>
+              <li>30-day unopened returns</li>
+              <li>Two-year RIOT Care included</li>
+              <li>Color can change before dispatch</li>
+            </ul>
+
+            <div class="countdown-panel">
+              <div class="countdown-label"><span>First-batch window closes in</span><i aria-hidden="true"></i></div>
+              <div class="countdown" id="countdown" role="timer" aria-label="Time remaining in the first batch window" aria-live="off">
+                <div class="countdown-unit"><strong id="countdownDays">09</strong><span>Days</span></div>
+                <div class="countdown-unit"><strong id="countdownHours">00</strong><span>Hours</span></div>
+                <div class="countdown-unit"><strong id="countdownMinutes">00</strong><span>Minutes</span></div>
+                <div class="countdown-unit"><strong id="countdownSeconds">00</strong><span>Seconds</span></div>
+              </div>
+            </div>
+          </div>
+
+          <form class="order-form" id="preorderForm">
+            <h3>Reserve your RIOT//01</h3>
+            <p class="form-intro">First batch ships in launch order. We will email you before anything is charged.</p>
+
+            <div class="field">
+              <label for="email">Email address</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="player@example.com" required>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="region">Shipping region</label>
+                <select id="region" name="region" required>
+                  <option value="">Choose region</option>
+                  <option>United States</option>
+                  <option>Canada</option>
+                  <option>United Kingdom</option>
+                  <option>European Union</option>
+                  <option>Japan</option>
+                  <option>Australia / New Zealand</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="quantity">Qty</label>
+                <select id="quantity" name="quantity">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                </select>
+              </div>
+            </div>
+
+            <label class="check-field">
+              <input type="checkbox" required>
+              <span>I agree to the pre-order terms and understand that the final launch date can move by a few weeks.</span>
+            </label>
+
+            <button class="button button-dark" type="submit">
+              Reserve for $79
+              <span class="button-arrow" aria-hidden="true">→</span>
+            </button>
+
+            <div class="form-trust"><span>No spam</span><span>Cancel before dispatch</span><span>Secure checkout</span></div>
+            <p class="form-status" id="formStatus" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section faq-section" id="faq">
+      <div class="page-width faq-layout">
+        <aside class="faq-aside reveal">
+          <div class="eyebrow section-kicker">05 / Reasonable questions</div>
+          <h2 class="section-title">Before you press buy.</h2>
+          <p>Everything important, minus fourteen pages of legal department confetti.</p>
+          <a class="button button-primary" href="#preorder">Get the first batch <span class="button-arrow" aria-hidden="true">→</span></a>
+        </aside>
+
+        <div class="faq-list reveal" style="--reveal-delay: 80ms">
+          <details name="faq" open>
+            <summary>What comes in the box?<span class="faq-plus" aria-hidden="true"></span></summary>
+            <div class="faq-answer"><p>You get RIOT//01, all 48 launch games, a braided USB-C cable, a wrist loop, and a quick-start card. No subscription, no welcome-week discount loop, no plastic coasters.</p></div>
+          </details>
+
+          <details name="faq">
+            <summary>Do I need an account?<span class="faq-plus" aria-hidden="true"></span></summary>
+            <div class="faq-answer"><p>Nope. Games, settings, and saves work offline. An account is only requested if you ever choose optional software updates or future cloud features—and the device is perfectly happy without one.</p></div>
+          </details>
+
+          <details name="faq">
+            <summary>Can I play my own games?<span class="faq-plus" aria-hidden="true"></span></summary>
+            <div class="faq-answer"><p>Yes. RIOT Mode can load compatible homebrew from a microSD card. Official releases arrive through signed system drops; RIOT does not ship an open, cluttered game storefront.</p></div>
+          </details>
+
+          <details name="faq">
+            <summary>How does multiplayer work?<span class="faq-plus" aria-hidden="true"></span></summary>
+            <div class="faq-answer"><p>Up to four RIOT//01 units can connect locally for supported games. It is designed for a sofa, a table, or one deeply concerning hallway race.</p></div>
+          </details>
+
+          <details name="faq">
+            <summary>When will it ship?<span class="faq-plus" aria-hidden="true"></span></summary>
+            <div class="faq-answer"><p>The first 2,000 units are scheduled to ship in production order during the launch window shown above. We will confirm your place and color choice before taking payment.</p></div>
+          </details>
+
+          <details name="faq">
+            <summary>What if I do not like it?<span class="faq-plus" aria-hidden="true"></span></summary>
+            <div class="faq-answer"><p>Return an unopened RIOT//01 within 30 days for a full refund. We also include a two-year limited hardware warranty for manufacturing faults that are not caused by competitive gravity experiments.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="page-width footer-main">
+      <div class="footer-brand">
+        <a class="brand" href="#hardware" aria-label="RIOT 01 home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span>RIOT//01</span>
+        </a>
+        <p class="footer-tagline">Built for couch starts, midnight finishes, and the tiny thrill of one more game.</p>
+      </div>
+
+      <nav class="footer-column" aria-label="Explore">
+        <h3>Explore</h3>
+        <a href="#hardware">Hardware</a>
+        <a href="#features">Features</a>
+        <a href="#specs">Technical specs</a>
+        <a href="#games">Game library</a>
+      </nav>
+
+      <div class="footer-column">
+        <h3>Say hello</h3>
+        <a href="mailto:hello@riot01.to">hello@riot01.to</a>
+        <a href="mailto:press@riot01.to?subject=RIOT%2F%2F01%20press%20kit">Press kit</a>
+        <a href="#preorder">Pre-order support</a>
+        <a href="#faq">Shipping FAQ</a>
+      </div>
+    </div>
+
+    <div class="page-width footer-bottom">
+      <span>© <span id="year">2026</span> RIOT Devices. Made for recess.</span>
+      <span>No cloud tax · No monthly nonsense · No subscription</span>
+    </div>
+
+    <p class="footer-wordmark" aria-hidden="true">RIOT<span>//01</span></p>
+  </footer>
+
+  <script>
+    (() => {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const revealItems = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && !reducedMotion) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -45px' });
+        revealItems.forEach((item) => revealObserver.observe(item));
+      } else {
+        revealItems.forEach((item) => item.classList.add('is-visible'));
+      }
+
+      const menuButton = document.querySelector('.menu-toggle');
+      const siteMenu = document.getElementById('site-menu');
+
+      const closeMenu = () => {
+        siteMenu.classList.remove('open');
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.setAttribute('aria-label', 'Open navigation');
+      };
+
+      menuButton.addEventListener('click', () => {
+        const opening = !siteMenu.classList.contains('open');
+        siteMenu.classList.toggle('open', opening);
+        menuButton.setAttribute('aria-expanded', String(opening));
+        menuButton.setAttribute('aria-label', opening ? 'Close navigation' : 'Open navigation');
+      });
+
+      siteMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeMenu();
+      });
+
+      const paletteInfo = {
+        sherbet: {
+          label: 'Sherbet',
+          description: 'Coral shell, cobalt controls, lime status light'
+        },
+        pickle: {
+          label: 'Pickle',
+          description: 'Acid shell, coral controls, blue status light'
+        },
+        moonmilk: {
+          label: 'Moonmilk',
+          description: 'Lavender shell, black controls, lime status light'
+        }
+      };
+
+      const paletteButtons = [...document.querySelectorAll('[data-palette]')];
+      const productShells = [...document.querySelectorAll('.product-shell')];
+      const paletteNames = [...document.querySelectorAll('[data-palette-name]')];
+      const paletteDescriptions = [...document.querySelectorAll('[data-palette-description]')];
+
+      const applyPalette = (name, shouldStore = true) => {
+        if (!paletteInfo[name]) return;
+
+        productShells.forEach((shell) => {
+          shell.classList.remove('palette-sherbet', 'palette-pickle', 'palette-moonmilk');
+          shell.classList.add(`palette-${name}`);
+        });
+
+        paletteButtons.forEach((button) => {
+          button.setAttribute('aria-pressed', String(button.dataset.palette === name));
+        });
+
+        paletteNames.forEach((element) => {
+          element.textContent = paletteInfo[name].label;
+        });
+
+        paletteDescriptions.forEach((element) => {
+          element.textContent = paletteInfo[name].description;
+        });
+
+        if (shouldStore) {
+          try {
+            localStorage.setItem('riot-palette', name);
+          } catch (error) {
+            console.info('Color preference could not be stored.', error);
+          }
+        }
+      };
+
+      paletteButtons.forEach((button) => {
+        button.addEventListener('click', () => applyPalette(button.dataset.palette));
+      });
+
+      try {
+        const storedPalette = localStorage.getItem('riot-palette');
+        if (storedPalette && paletteInfo[storedPalette]) applyPalette(storedPalette, false);
+      } catch (error) {
+        console.info('Stored color preference is unavailable.', error);
+      }
+
+      const dayMs = 24 * 60 * 60 * 1000;
+      const countdownKey = 'riot-first-batch-deadline';
+      let countdownTarget = Date.now() + (9 * dayMs);
+
+      try {
+        const storedDeadline = Number(localStorage.getItem(countdownKey));
+        if (storedDeadline > Date.now()) countdownTarget = storedDeadline;
+        else localStorage.setItem(countdownKey, String(countdownTarget));
+      } catch (error) {
+        console.info('Countdown preference could not be stored.', error);
+      }
+
+      const countdown = document.getElementById('countdown');
+      const daysElement = document.getElementById('countdownDays');
+      const hoursElement = document.getElementById('countdownHours');
+      const minutesElement = document.getElementById('countdownMinutes');
+      const secondsElement = document.getElementById('countdownSeconds');
+      let lastCountdownMinute = -1;
+
+      const updateCountdown = () => {
+        let remaining = Math.max(0, countdownTarget - Date.now());
+        const totalSeconds = Math.floor(remaining / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        daysElement.textContent = String(days).padStart(2, '0');
+        hoursElement.textContent = String(hours).padStart(2, '0');
+        minutesElement.textContent = String(minutes).padStart(2, '0');
+        secondsElement.textContent = String(seconds).padStart(2, '0');
+
+        if (minutes !== lastCountdownMinute) {
+          countdown.setAttribute('aria-label', `${days} days, ${hours} hours and ${minutes} minutes remaining in the first batch window`);
+          lastCountdownMinute = minutes;
+        }
+      };
+
+      updateCountdown();
+      window.setInterval(updateCountdown, 1000);
+
+      const gameScreen = document.getElementById('gameScreen');
+      const heroSprite = document.getElementById('gameHero');
+      const enemySprite = document.getElementById('gameEnemy');
+      const coinSprite = document.getElementById('gameCoin');
+      const scoreText = document.getElementById('screenScoreText');
+      const gameStatus = document.getElementById('gameStatus');
+      const screenOverlay = document.getElementById('screenOverlay');
+      const gameButtons = [...document.querySelectorAll('[data-control]')];
+      const heroDevice = document.getElementById('heroDevice');
+      const demoHint = document.getElementById('demoHint');
+
+      let playerX = 72;
+      let playerY = 130;
+      let score = 1200;
+      let paused = false;
+      let jumping = false;
+
+      const coinPosition = { x: 252, y: 78 };
+      const updatePlayer = () => heroSprite.setAttribute('transform', `translate(${playerX} ${playerY})`);
+      const updateScore = () => {
+        scoreText.textContent = String(score).padStart(6, '0');
+        gameStatus.textContent = `Score ${score}.`;
+      };
+
+      const collectCoinIfNeeded = () => {
+        if (Math.abs(playerX - coinPosition.x) < 25 && playerY < coinPosition.y + 42) {
+          score += 100;
+          updateScore();
+          coinSprite.classList.add('caught');
+          gameStatus.textContent = `Coin collected. Score ${score}.`;
+          window.setTimeout(() => {
+            coinSprite.classList.remove('caught');
+          }, 320);
+        }
+      };
+
+      const jump = () => {
+        if (paused || jumping) return;
+        jumping = true;
+        playerY = 91;
+        updatePlayer();
+        gameStatus.textContent = 'Jump!';
+        window.setTimeout(() => {
+          playerY = 130;
+          jumping = false;
+          updatePlayer();
+          collectCoinIfNeeded();
+        }, 280);
+      };
+
+      const bonk = () => {
+        if (paused) return;
+        enemySprite.classList.remove('knocked');
+        void enemySprite.getBoundingClientRect();
+        enemySprite.classList.add('knocked');
+        gameScreen.classList.remove('bonk');
+        void gameScreen.getBoundingClientRect();
+        gameScreen.classList.add('bonk');
+        score += 25;
+        updateScore();
+        gameStatus.textContent = `Bonk! Score ${score}.`;
+        window.setTimeout(() => enemySprite.classList.remove('knocked'), 430);
+        window.setTimeout(() => gameScreen.classList.remove('bonk'), 270);
+      };
+
+      const togglePause = () => {
+        paused = !paused;
+        screenOverlay.hidden = !paused;
+        gameStatus.textContent = paused ? 'Game paused.' : 'Game resumed.';
+      };
+
+      const performControl = (control) => {
+        if (control === 'start') {
+          togglePause();
+          return;
+        }
+
+        if (paused) return;
+
+        if (control === 'left') playerX = Math.max(22, playerX - 18);
+        if (control === 'right') playerX = Math.min(286, playerX + 18);
+        if (control === 'up' || control === 'a' || control === 'x') jump();
+        if (control === 'down' || control === 'y') {
+          playerY = 134;
+          updatePlayer();
+          gameStatus.textContent = 'Ducking.';
+          window.setTimeout(() => {
+            if (!jumping) {
+              playerY = 130;
+              updatePlayer();
+            }
+          }, 260);
+        }
+        if (control === 'b') bonk();
+        if (control === 'select') gameStatus.textContent = `Select. Score ${score}.`;
+
+        updatePlayer();
+        if (!jumping) collectCoinIfNeeded();
+      };
+
+      gameButtons.forEach((button) => {
+        button.addEventListener('pointerdown', () => {
+          button.classList.add('pressed');
+          window.setTimeout(() => button.classList.remove('pressed'), 110);
+        });
+
+        button.addEventListener('click', () => performControl(button.dataset.control));
+      });
+
+      gameScreen.addEventListener('keydown', (event) => {
+        const keyMap = {
+          ArrowLeft: 'left',
+          ArrowRight: 'right',
+          ArrowUp: 'up',
+          ArrowDown: 'down',
+          a: 'a',
+          z: 'b',
+          x: 'b',
+          Enter: 'start'
+        };
+
+        const control = keyMap[event.key] || keyMap[event.key.toLowerCase()];
+        if (!control) return;
+        event.preventDefault();
+        performControl(control);
+      });
+
+      document.getElementById('tryDemo').addEventListener('click', () => {
+        demoHint.textContent = 'You have control. Try B.';
+        demoHint.style.background = 'var(--acid)';
+        heroDevice.classList.remove('demo-live');
+        void heroDevice.getBoundingClientRect();
+        heroDevice.classList.add('demo-live');
+        gameScreen.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+        window.setTimeout(() => gameScreen.focus({ preventScroll: true }), reducedMotion ? 0 : 450);
+      });
+
+      const preorderForm = document.getElementById('preorderForm');
+      const formStatus = document.getElementById('formStatus');
+
+      preorderForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!preorderForm.reportValidity()) return;
+
+        const selectedButton = paletteButtons.find((button) => button.getAttribute('aria-pressed') === 'true');
+        const paletteName = paletteInfo[selectedButton ? selectedButton.dataset.palette : 'sherbet'].label;
+        const quantity = document.getElementById('quantity').value;
+        const email = document.getElementById('email').value.trim();
+
+        formStatus.textContent = `Reserved: ${quantity} × RIOT//01 in ${paletteName}. Confirmation queued for ${email}.`;
+        preorderForm.querySelector('button[type="submit"]').innerHTML = 'Reserved ✓';
+      });
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
