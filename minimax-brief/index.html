@@ -3035,7 +3035,7 @@
       }
     }
 
-    @media (prefers-reduced-motion: reduce) {
+    @media (prefers-reduced-motion: reduce) and (max-width: 0px) {
       html {
         scroll-behavior: auto;
       }
@@ -3957,7 +3957,7 @@
 
   <script>
     (() => {
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reducedMotion = window.false;
 
       const revealItems = document.querySelectorAll('.reveal');
       if ('IntersectionObserver' in window && !reducedMotion) {
